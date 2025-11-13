@@ -1,9 +1,13 @@
 <?php 
 $active = "member-area";
 
+include_once "../../config/database.php";
+
 session_start();
 
-include_once "../../config/database.php";
+if(isset($_SESSION['user_id'])) {
+    header("Location: ../area.php");
+}
 
 $database = new Database();
 $conn = $database->getConnection();
@@ -15,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     try {
-        $stmt = $conn->prepare("SELECT * FROM members WHERE email = ?");
+        $stmt = $conn->prepare("SELECT * FROM admins WHERE email = ?");
         $stmt->execute([$email]);
         $member = $stmt->fetch();
 
@@ -58,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="card shadow-lg border-0">
                         <div class="card-body p-5">
                             <h2 class="text-center mb-4 text-primary fw-bold">Connexion</h2>
-                            <p class="text-center text-muted mb-4">Connectez-vous à votre espace adhérent Fit&Fun</p>
+                            <p class="text-center text-muted mb-4">Connectez-vous à votre espace administrateur Fit&Fun</p>
 
                             <?php if ($error): ?>
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -80,10 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary btn-lg fw-semibold">Se connecter</button>
-                                </div>
-
-                                <div class="text-center mt-3">
-                                    <p class="text-muted">Vous n'avez pas de compte ? <a href="register.php" class="text-primary fw-semibold text-decoration-none">S'inscrire</a></p>
                                 </div>
                             </form>
                         </div>

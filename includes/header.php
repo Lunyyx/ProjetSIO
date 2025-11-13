@@ -14,8 +14,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if($active == "member-area") { echo "active bg-white text-primary"; } else { echo "text-white"; } ?> px-4 py-2 rounded-pill fw-semibold" href="/member/area.php">
-                        Espace Adhérent
+                    <a class="nav-link <?php if($active == "admin-area") { echo "active bg-white text-primary"; } else { echo "text-white"; } ?> px-4 py-2 rounded-pill fw-semibold" href="/admin/area.php">
+                        Espace Administrateur
                     </a>
                 </li>
             </ul>
