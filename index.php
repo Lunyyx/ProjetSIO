@@ -1,3 +1,6 @@
+<?php 
+$active = "home"
+?>
 <!DOCTYPE html>
 <html lang="fr" class="h-100">
     <head>

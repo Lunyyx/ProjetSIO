@@ -9,12 +9,12 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav gap-2">
                 <li class="nav-item">
-                    <a class="nav-link active px-4 py-2 rounded-pill bg-white text-primary fw-semibold" aria-current="page" href="#" id="home-tab2" data-bs-toggle="tab" role="tab" aria-selected="true">
+                    <a class="nav-link <?php if($active == "home") { echo "active bg-white text-primary"; } else { echo "text-white"; }  ?> px-4 py-2 rounded-pill fw-semibold" href="/index.php">
                         Accueil
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link px-4 py-2 rounded-pill text-white fw-semibold" href="#" id="profile-tab2" data-bs-toggle="tab" role="tab" aria-selected="false" style="transition: all 0.3s ease;">
+                    <a class="nav-link <?php if($active == "member-area") { echo "active bg-white text-primary"; } else { echo "text-white"; } ?> px-4 py-2 rounded-pill fw-semibold" href="/member/area.php">
                         Espace Adhérent
                     </a>
                 </li>
