@@ -18,7 +18,6 @@ if(empty($_SESSION['user_id'])) {
         <?php include_once("../includes/header.php") ?>
 
         <div class="container my-5">
-            <!-- En-tête de bienvenue -->
             <div class="row mb-5">
                 <div class="col-12">
                     <div class="card border-0 shadow-sm bg-primary text-white">
@@ -30,7 +29,6 @@ if(empty($_SESSION['user_id'])) {
                 </div>
             </div>
 
-            <!-- Cartes d'actions principales -->
             <div class="row g-4 mb-5">
                 <div class="col-md-6">
                     <div class="card h-100 border-0 shadow-sm hover-lift">
@@ -63,7 +61,6 @@ if(empty($_SESSION['user_id'])) {
                 </div>
             </div>
 
-            <!-- Actions secondaires -->
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="card border-0 shadow-sm hover-lift">
@@ -99,7 +96,6 @@ if(empty($_SESSION['user_id'])) {
                 </div>
             </div>
 
-            <!-- Bouton de déconnexion -->
             <div class="row mt-5">
                 <div class="col-12 text-center">
                     <a href="auth/logout.php" class="btn btn-outline-danger">
