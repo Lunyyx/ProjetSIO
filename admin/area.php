@@ -68,7 +68,7 @@ if(empty($_SESSION['user_id'])) {
                             <i class="bi bi-calendar-event text-warning mb-2" style="font-size: 2rem;"></i>
                             <h5 class="card-title mb-2">Planning</h5>
                             <p class="text-muted small mb-3">Gérer les cours</p>
-                            <a href="#" class="btn btn-outline-warning btn-sm w-100">Accéder</a>
+                            <a href="planning/manage.php" class="btn btn-outline-warning btn-sm w-100">Accéder</a>
                         </div>
                     </div>
                 </div>
