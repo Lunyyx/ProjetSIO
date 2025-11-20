@@ -62,7 +62,7 @@ if(empty($_SESSION['user_id'])) {
             </div>
 
             <div class="row g-4">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card border-0 shadow-sm hover-lift">
                         <div class="card-body p-3 text-center">
                             <i class="bi bi-calendar-event text-warning mb-2" style="font-size: 2rem;"></i>
@@ -73,7 +73,18 @@ if(empty($_SESSION['user_id'])) {
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm hover-lift">
+                        <div class="card-body p-3 text-center">
+                            <i class="bi bi-person-badge mb-2" style="font-size: 2rem; color: #6f42c1;"></i>
+                            <h5 class="card-title mb-2">Animateurs</h5>
+                            <p class="text-muted small mb-3">Gérer les instructeurs</p>
+                            <a href="instructors/list.php" class="btn btn-outline-purple btn-sm w-100">Accéder</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
                     <div class="card border-0 shadow-sm hover-lift">
                         <div class="card-body p-3 text-center">
                             <i class="bi bi-cash-coin text-info mb-2" style="font-size: 2rem;"></i>
@@ -84,7 +95,7 @@ if(empty($_SESSION['user_id'])) {
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card border-0 shadow-sm hover-lift">
                         <div class="card-body p-3 text-center">
                             <i class="bi bi-gear-fill text-secondary mb-2" style="font-size: 2rem;"></i>
@@ -117,6 +128,18 @@ if(empty($_SESSION['user_id'])) {
 
             .card {
                 transition: all 0.3s ease;
+            }
+            
+            /* Style pour le bouton violet avec hover */
+            .btn-outline-purple {
+                color: #6f42c1;
+                border-color: #6f42c1;
+            }
+            
+            .btn-outline-purple:hover {
+                color: #fff;
+                background-color: #6f42c1;
+                border-color: #6f42c1;
             }
         </style>
 

@@ -12,14 +12,14 @@ if(empty($_SESSION['user_id'])) {
 $database = new Database();
 $conn = $database->getConnection();
 
-$stmt = $conn->prepare("SELECT * FROM members");
+$stmt = $conn->prepare("SELECT * FROM instructors ORDER BY created_at DESC");
 $stmt->execute();
-$members = $stmt->fetchAll();
+$instructors = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="fr" class="h-100">
     <head>
-        <title>Liste des adhérents - Fit&Fun</title>
+        <title>Liste des animateurs - Fit&Fun</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="assets/css/index.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -33,20 +33,20 @@ $members = $stmt->fetchAll();
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h1 class="mb-2">
-                                <i class="bi bi-people-fill text-primary me-2 text-success"></i>
-                                Liste des adhérents
+                                <i class="bi bi-person-badge me-2" style="color: #6f42c1;"></i>
+                                Liste des animateurs
                             </h1>
                             <p class="text-muted mb-0">
                                 <i class="bi bi-info-circle me-1"></i>
-                                <?= count($members) ?> membre(s) inscrit(s)
+                                <?= count($instructors) ?> animateur(s) enregistré(s)
                             </p>
                         </div>
                         <div>
                             <a href="../area.php" class="btn btn-outline-secondary me-2">
                                 <i class="bi bi-arrow-left me-2"></i>Retour
                             </a>
-                            <a href="add.php" class="btn btn-success">
-                                <i class="bi bi-person-plus-fill me-2"></i>Ajouter un adhérent
+                            <a href="add.php" class="btn" style="background-color: #6f42c1; color: white; border-color: #6f42c1;">
+                                <i class="bi bi-person-plus-fill me-2"></i>Ajouter un animateur
                             </a>
                         </div>
                     </div>
@@ -59,7 +59,7 @@ $members = $stmt->fetchAll();
                         <span class="input-group-text bg-white">
                             <i class="bi bi-search"></i>
                         </span>
-                        <input type="text" class="form-control" id="searchInput" placeholder="Rechercher un adhérent...">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Rechercher un animateur...">
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@ $members = $stmt->fetchAll();
                     <div class="card border-0 shadow-sm">
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0" id="membersTable">
+                                <table class="table table-hover align-middle mb-0" id="instructorsTable">
                                     <thead class="bg-light">
                                         <tr>
                                             <th class="px-4 py-3">
@@ -80,33 +80,33 @@ $members = $stmt->fetchAll();
                                                 <i class="bi bi-envelope me-2"></i>Email
                                             </th>
                                             <th class="py-3">
-                                                <i class="bi bi-geo-alt me-2"></i>Adresse
+                                                <i class="bi bi-telephone me-2"></i>Téléphone
                                             </th>
-                                            <th class="py-3">Code Postal</th>
-                                            <th class="py-3">Ville</th>
                                             <th class="py-3">
-                                                <i class="bi bi-calendar me-2"></i>Inscrit le
+                                                <i class="bi bi-star me-2"></i>Spécialités
+                                            </th>
+                                            <th class="py-3">
+                                                <i class="bi bi-calendar me-2"></i>Créé le
                                             </th>
                                             <th class="py-3 text-center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php if (count($members) > 0): ?>
-                                            <?php foreach($members as $m): ?>
+                                        <?php if (count($instructors) > 0): ?>
+                                            <?php foreach($instructors as $i): ?>
                                             <tr>
-                                                <td class="px-4 py-3 fw-semibold"><?= htmlspecialchars($m['first_name']) ?></td>
-                                                <td class="py-3 fw-semibold"><?= htmlspecialchars($m['last_name']) ?></td>
+                                                <td class="px-4 py-3 fw-semibold"><?= htmlspecialchars($i['first_name']) ?></td>
+                                                <td class="py-3 fw-semibold"><?= htmlspecialchars($i['last_name']) ?></td>
                                                 <td class="py-3">
-                                                    <a href="mailto:<?= htmlspecialchars($m['email']) ?>" class="text-decoration-none">
-                                                        <?= htmlspecialchars($m['email']) ?>
+                                                    <a href="mailto:<?= htmlspecialchars($i['email']) ?>" class="text-decoration-none">
+                                                        <?= htmlspecialchars($i['email']) ?>
                                                     </a>
                                                 </td>
-                                                <td class="py-3"><?= htmlspecialchars($m['address']) ?></td>
-                                                <td class="py-3"><?= htmlspecialchars($m['address_pc']) ?></td>
-                                                <td class="py-3"><?= htmlspecialchars($m['address_city']) ?></td>
+                                                <td class="py-3"><?= htmlspecialchars($i['phone']) ?></td>
+                                                <td class="py-3"><?= htmlspecialchars($i['specialties']) ?></td>
                                                 <td class="py-3">
                                                     <small class="text-muted">
-                                                        <?= date('d/m/Y', strtotime($m['created_at'])) ?>
+                                                        <?= date('d/m/Y', strtotime($i['created_at'])) ?>
                                                     </small>
                                                 </td>
                                                 <td class="py-3 text-center">
@@ -114,7 +114,7 @@ $members = $stmt->fetchAll();
                                                         <button type="button" class="btn btn-outline-primary" title="Voir">
                                                             <i class="bi bi-eye"></i>
                                                         </button>
-                                                        <a href="edit.php?id=<?= $m['id'] ?>" class="btn btn-outline-warning" title="Modifier">
+                                                        <a href="edit.php?id=<?= $i['id'] ?>" class="btn btn-outline-warning" title="Modifier">
                                                             <i class="bi bi-pencil"></i>
                                                         </a>
                                                         <button type="button" class="btn btn-outline-danger" title="Supprimer">
@@ -168,7 +168,7 @@ $members = $stmt->fetchAll();
             // Fonction de recherche en temps réel
             document.getElementById('searchInput').addEventListener('keyup', function() {
                 const searchValue = this.value.toLowerCase();
-                const tableRows = document.querySelectorAll('#membersTable tbody tr');
+                const tableRows = document.querySelectorAll('#instructorsTable tbody tr');
                 
                 tableRows.forEach(row => {
                     const text = row.textContent.toLowerCase();
