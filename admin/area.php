@@ -90,7 +90,7 @@ if(empty($_SESSION['user_id'])) {
                             <i class="bi bi-cash-coin text-info mb-2" style="font-size: 2rem;"></i>
                             <h5 class="card-title mb-2">Cotisations</h5>
                             <p class="text-muted small mb-3">Suivi des paiements</p>
-                            <a href="#" class="btn btn-outline-info btn-sm w-100">Accéder</a>
+                            <a href="cotisations/list.php" class="btn btn-outline-info btn-sm w-100">Accéder</a>
                         </div>
                     </div>
                 </div>
