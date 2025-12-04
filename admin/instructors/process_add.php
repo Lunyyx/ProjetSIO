@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Vérifier si l'email existe déjà (si fourni)
         if ($email) {
-            $stmt = $conn->prepare("SELECT id FROM instructors WHERE email = ?");
+            $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
             $stmt->execute([$email]);
             
             if ($stmt->rowCount() > 0) {
@@ -31,8 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         $stmt = $conn->prepare("
-            INSERT INTO instructors (first_name, last_name, email, phone, specialties, created_at) 
-            VALUES (?, ?, ?, ?, ?, NOW())
+            INSERT INTO users (first_name, last_name, email, phone, specialties, role, created_at) 
+            VALUES (?, ?, ?, ?, ?, 'animateur', NOW())
         ");
         
         $result = $stmt->execute([$first_name, $last_name, $email, $phone, $specialties]);

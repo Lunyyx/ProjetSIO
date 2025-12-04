@@ -5,7 +5,7 @@ require_once "../../includes/permissions.php";
 session_start();
 
 if(empty($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
+    header("Location: ../../auth/login.php");
     exit();
 }
 
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("
             UPDATE schedule 
             SET activity_id = ?, 
-                instructor_id = ?, 
+                user_id = ?, 
                 day_of_week = ?, 
                 start_time = ?, 
                 end_time = ?, 
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $stmt->execute([
             $_POST['activity_id'],
-            $_POST['instructor_id'],
+            $_POST['user_id'],
             $_POST['day_of_week'],
             $_POST['start_time'],
             $_POST['end_time'],

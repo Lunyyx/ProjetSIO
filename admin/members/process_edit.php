@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // Vérifier si l'email existe déjà (sauf pour ce membre)
-        $stmt = $conn->prepare("SELECT id FROM members WHERE email = ? AND id != ?");
+        $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
         $stmt->execute([$email, $member_id]);
         
         if ($stmt->rowCount() > 0) {
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Mettre à jour le membre
         $stmt = $conn->prepare("
-            UPDATE members 
+            UPDATE users 
             SET first_name = ?, last_name = ?, email = ?, role = ?, address = ?, address_pc = ?, address_city = ?, preferred_activities = ?
             WHERE id = ?
         ");

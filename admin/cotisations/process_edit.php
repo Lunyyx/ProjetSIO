@@ -23,11 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $stmt = $conn->prepare("
             UPDATE cotisations 
-            SET member_id = ?, amount = ?, payment_date = ?, start_date = ?, end_date = ?, payment_method = ?
+            SET user_id = ?, amount = ?, payment_date = ?, start_date = ?, end_date = ?, payment_method = ?, status = ?
             WHERE id = ?
         ");
         
-        $result = $stmt->execute([$member_id, $amount, $payment_date, $start_date, $end_date, $payment_method, $cotisation_id]);
+        $result = $stmt->execute([$user_id, $amount, $payment_date, $start_date, $end_date, $payment_method, $status, $id]);
 
         if ($result) {
             header("Location: manage.php?success=updated");

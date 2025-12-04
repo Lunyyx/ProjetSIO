@@ -16,7 +16,7 @@ try {
                i.last_name
         FROM schedule s
         JOIN activities a ON s.activity_id = a.id
-        JOIN instructors i ON s.instructor_id = i.id
+        JOIN users i ON s.user_id = i.id
         WHERE s.is_active = 1
         ORDER BY s.day_of_week, s.start_time
     ");

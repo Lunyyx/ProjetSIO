@@ -14,7 +14,7 @@ if(empty($_SESSION['user_id']) || !isMemberBureau()) {
 $database = new Database();
 $conn = $database->getConnection();
 
-$stmt = $conn->prepare("SELECT * FROM instructors ORDER BY last_name, first_name");
+$stmt = $conn->prepare("SELECT * FROM users WHERE role = 'animateur' ORDER BY last_name, first_name");
 $stmt->execute();
 $instructors = $stmt->fetchAll();
 ?>

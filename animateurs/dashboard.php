@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/permissions.php';
 
 // Vérifier que l'utilisateur est connecté et a le rôle animateur
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'animateur' && $_SESSION['role'] !== 'membre_bureau')) {
-    header("Location: ../admin/auth/login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 

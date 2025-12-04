@@ -60,7 +60,7 @@ function redirectByRole($role) {
             header("Location: /admin/area.php");
             break;
         case 'animateur':
-            header("Location: /animateur/dashboard.php");
+            header("Location: /animateurs/dashboard.php");
             break;
         case 'adherent':
             header("Location: /planning.php");

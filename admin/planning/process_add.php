@@ -5,7 +5,7 @@ require_once "../../includes/permissions.php";
 session_start();
 
 if(empty($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
+    header("Location: ../../auth/login.php");
     exit();
 }
 
@@ -21,13 +21,13 @@ $conn = $database->getConnection();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $stmt = $conn->prepare("
-            INSERT INTO schedule (activity_id, instructor_id, day_of_week, start_time, end_time, location, max_participants, is_recurring, created_at) 
+            INSERT INTO schedule (activity_id, user_id, day_of_week, start_time, end_time, location, max_participants, is_recurring, created_at) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())
         ");
         
         $stmt->execute([
             $_POST['activity_id'],
-            $_POST['instructor_id'],
+            $_POST['user_id'],
             $_POST['day_of_week'],
             $_POST['start_time'],
             $_POST['end_time'],

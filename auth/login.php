@@ -3,10 +3,11 @@ session_start();
 
 $active = "member-area";
 
-include_once "../../config/database.php";
+include_once "../config/database.php";
+include_once "../includes/permissions.php";
 
 if(isset($_SESSION['user_id'])) {
-    header("Location: ../area.php");
+    redirectByRole($_SESSION['role'] ?? null);
 }
 
 $database = new Database();
@@ -19,26 +20,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     try {
-        $stmt = $conn->prepare("SELECT * FROM admins WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, first_name, last_name, email, password, role FROM users WHERE email = ? AND password IS NOT NULL");
         $stmt->execute([$email]);
-        $admin = $stmt->fetch();
+        $user = $stmt->fetch();
 
-        if ($admin) {
-            if (password_verify($password, $admin['password'])) {
-                $_SESSION['user_id'] = $admin['id'];
-                $_SESSION['email'] = $admin['email'];
-                $_SESSION['first_name'] = $admin['first_name'];
-                $_SESSION['last_name'] = $admin['last_name'];
-                $_SESSION['role'] = 'membre_bureau'; // Les admins sont tous membres du bureau
-                
-                header("Location: ../area.php");
-                exit();
-            } else {
-                $error = "Le mot de passe est incorrect !";
-            }
-        } else {
-            $error = "Aucun compte trouvé avec cet email.";
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['first_name'] = $user['first_name'];
+            $_SESSION['last_name'] = $user['last_name'];
+            $_SESSION['role'] = $user['role'];
+            
+            redirectByRole($_SESSION['role']);
+            exit();
         }
+
+        $error = "Email ou mot de passe incorrect.";
     } catch(PDOException $e) {
         error_log("Erreur login : " . $e->getMessage());
         $error = "Une erreur est survenue : " . $e->getMessage();
@@ -54,10 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-        <link href="../../assets/css/common.css" rel="stylesheet">
+        <link href="../assets/css/common.css" rel="stylesheet">
     </head>
     <body>
-        <?php include_once("../../includes/header.php") ?>
+        <?php include_once("../includes/header.php") ?>
 
         <div class="container my-5">
             <div class="row justify-content-center">

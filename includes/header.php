@@ -26,17 +26,9 @@ function getNavLinkClass($page, $active) {
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <?php if (isset($_SESSION['role'])): ?>
-                        <?php if ($_SESSION['role'] === 'adherent' || $_SESSION['role'] === 'animateur' || $_SESSION['role'] === 'membre_bureau'): ?>
+                        <?php if ($_SESSION['role'] === 'animateur'): ?>
                             <li class="nav-item">
-                                <a class="nav-link <?= getNavLinkClass('adherent_dashboard', $active) ?> px-4 py-2 rounded-pill fw-semibold" href="/adherent/dashboard.php">
-                                    Mon Espace
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        
-                        <?php if ($_SESSION['role'] === 'animateur' || $_SESSION['role'] === 'membre_bureau'): ?>
-                            <li class="nav-item">
-                                <a class="nav-link <?= getNavLinkClass('animateur_dashboard', $active) ?> px-4 py-2 rounded-pill fw-semibold" href="/animateur/dashboard.php">
+                                <a class="nav-link <?= getNavLinkClass('animateur_dashboard', $active) ?> px-4 py-2 rounded-pill fw-semibold" href="/animateurs/dashboard.php">
                                     Espace Animateur
                                 </a>
                             </li>
@@ -52,13 +44,13 @@ function getNavLinkClass($page, $active) {
                     <?php endif; ?>
                     
                     <li class="nav-item">
-                        <a class="nav-link text-white px-4 py-2 rounded-pill fw-semibold" href="/admin/auth/logout.php">
+                        <a class="nav-link text-white px-4 py-2 rounded-pill fw-semibold" href="/auth/logout.php">
                             Déconnexion
                         </a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link text-white px-4 py-2 rounded-pill fw-semibold" href="/admin/auth/login.php">
+                        <a class="nav-link text-white px-4 py-2 rounded-pill fw-semibold" href="/auth/login.php">
                             Connexion
                         </a>
                     </li>

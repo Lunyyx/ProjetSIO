@@ -18,14 +18,14 @@ $conn = $database->getConnection();
 $stmt = $conn->prepare("
     SELECT c.*, m.first_name, m.last_name, m.email 
     FROM cotisations c 
-    LEFT JOIN members m ON c.member_id = m.id 
+    LEFT JOIN users m ON c.user_id = m.id 
     ORDER BY c.payment_date DESC
 ");
 $stmt->execute();
 $cotisations = $stmt->fetchAll();
 
 // Récupérer tous les membres pour les formulaires
-$stmt = $conn->prepare("SELECT id, first_name, last_name FROM members ORDER BY last_name, first_name");
+$stmt = $conn->prepare("SELECT id, first_name, last_name FROM users ORDER BY last_name, first_name");
 $stmt->execute();
 $members = $stmt->fetchAll();
 ?>
@@ -213,7 +213,7 @@ $members = $stmt->fetchAll();
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Adhérent <span class="text-danger">*</span></label>
-                                <select class="form-select" name="member_id" required>
+                                <select class="form-select" name="user_id" required>
                                     <option value="">Sélectionnez un adhérent</option>
                                     <?php foreach($members as $m): ?>
                                         <option value="<?= $m['id'] ?>"><?= htmlspecialchars($m['first_name'] . ' ' . $m['last_name']) ?></option>
@@ -364,7 +364,7 @@ $members = $stmt->fetchAll();
 
         function editCotisation(cotisation) {
             document.getElementById('edit_cotisation_id').value = cotisation.id;
-            document.getElementById('edit_member_id').value = cotisation.member_id;
+            document.getElementById('edit_user_id').value = cotisation.user_id;
             document.getElementById('edit_amount').value = cotisation.amount;
             document.getElementById('edit_payment_date').value = cotisation.payment_date;
             document.getElementById('edit_start_date').value = cotisation.start_date;

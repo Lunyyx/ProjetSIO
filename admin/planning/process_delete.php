@@ -5,7 +5,7 @@ require_once "../../includes/permissions.php";
 session_start();
 
 if(empty($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
+    header("Location: ../../auth/login.php");
     exit();
 }
 

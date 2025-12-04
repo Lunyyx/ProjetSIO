@@ -12,7 +12,7 @@ $database = new Database();
 $conn = $database->getConnection();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $member_id = $_POST['member_id'];
+    $user_id = $_POST['user_id'];
     $amount = floatval($_POST['amount']);
     $payment_date = $_POST['payment_date'];
     $start_date = $_POST['start_date'];
@@ -21,11 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         $stmt = $conn->prepare("
-            INSERT INTO cotisations (member_id, amount, payment_date, start_date, end_date, payment_method, created_at) 
+            INSERT INTO cotisations (user_id, amount, payment_date, start_date, end_date, payment_method, created_at) 
             VALUES (?, ?, ?, ?, ?, ?, NOW())
         ");
         
-        $result = $stmt->execute([$member_id, $amount, $payment_date, $start_date, $end_date, $payment_method]);
+        $result = $stmt->execute([$user_id, $amount, $payment_date, $start_date, $end_date, $payment_method]);
 
         if ($result) {
             header("Location: manage.php?success=added");

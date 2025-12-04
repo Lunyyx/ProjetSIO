@@ -7,7 +7,7 @@ require_once "../../includes/permissions.php";
 session_start();
 
 if(empty($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
+    header("Location: ../../auth/login.php");
     exit();
 }
 
@@ -19,8 +19,8 @@ if (!isMemberBureau()) {
 $database = new Database();
 $conn = $database->getConnection();
 
-// Récupérer tous les membres
-$stmt = $conn->prepare("SELECT * FROM members ORDER BY created_at DESC");
+// Récupérer uniquement les adhérents (pas les animateurs ni les membres du bureau)
+$stmt = $conn->prepare("SELECT * FROM users WHERE role IN ('adherent', 'visiteur') ORDER BY created_at DESC");
 $stmt->execute();
 $members = $stmt->fetchAll();
 
@@ -54,7 +54,7 @@ $activities = $stmt->fetchAll();
                             </h1>
                             <p class="text-muted mb-0">
                                 <i class="bi bi-info-circle me-1"></i>
-                                <?= count($members) ?> membre(s) inscrit(s)
+                                <?= count($members) ?> adhérent(s) inscrit(s) • Les animateurs sont gérés séparément
                             </p>
                         </div>
                         <div>
@@ -144,7 +144,7 @@ $activities = $stmt->fetchAll();
                                                         <?= htmlspecialchars($m['email']) ?>
                                                     </a>
                                                 </td>
-                                                <td class="py-3"><?= htmlspecialchars($m['address_city']) ?></td>
+                                                <td class="py-3"><?= htmlspecialchars($m['address_city'] ?? '') ?></td>
                                                 <td class="py-3">
                                                     <span class="badge bg-<?= getRoleColor($m['role']) ?>">
                                                         <?= getRoleName($m['role']) ?>
@@ -229,10 +229,9 @@ $activities = $stmt->fetchAll();
                                 <label class="form-label">Rôle</label>
                                 <select class="form-select" name="role">
                                     <option value="adherent">Adhérent</option>
-                                    <option value="animateur">Animateur</option>
-                                    <option value="membre_bureau">Membre du bureau</option>
                                     <option value="visiteur">Visiteur</option>
                                 </select>
+                                <small class="text-muted">Pour les animateurs, utilisez la section "Gestion des animateurs"</small>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Adresse</label>
@@ -302,10 +301,9 @@ $activities = $stmt->fetchAll();
                                 <label class="form-label">Rôle</label>
                                 <select class="form-select" name="role" id="edit_role">
                                     <option value="adherent">Adhérent</option>
-                                    <option value="animateur">Animateur</option>
-                                    <option value="membre_bureau">Membre du bureau</option>
                                     <option value="visiteur">Visiteur</option>
                                 </select>
+                                <small class="text-muted">Pour les animateurs, utilisez la section "Gestion des animateurs"</small>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Adresse</label>

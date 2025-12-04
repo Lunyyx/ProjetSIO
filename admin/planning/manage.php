@@ -7,7 +7,7 @@ require_once "../../includes/permissions.php";
 session_start();
 
 if(empty($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
+    header("Location: ../../auth/login.php");
     exit();
 }
 
@@ -26,7 +26,7 @@ $stmt->execute();
 $activities = $stmt->fetchAll();
 
 // Récupérer tous les animateurs
-$stmt = $conn->prepare("SELECT * FROM instructors ORDER BY last_name, first_name");
+$stmt = $conn->prepare("SELECT * FROM users WHERE role = 'animateur' ORDER BY last_name, first_name");
 $stmt->execute();
 $instructors = $stmt->fetchAll();
 
@@ -234,7 +234,7 @@ foreach ($schedules as $schedule) {
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Animateur *</label>
-                                    <select class="form-select" name="instructor_id" required>
+                                    <select class="form-select" name="user_id" required>
                                         <option value="">Choisir un animateur</option>
                                         <?php foreach ($instructors as $instructor): ?>
                                         <option value="<?= $instructor['id'] ?>">
@@ -320,7 +320,7 @@ foreach ($schedules as $schedule) {
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Animateur *</label>
-                                    <select class="form-select" name="instructor_id" id="edit_instructor_id" required>
+                                    <select class="form-select" name="user_id" id="edit_user_id" required>
                                         <option value="">Choisir un animateur</option>
                                         <?php foreach ($instructors as $instructor): ?>
                                         <option value="<?= $instructor['id'] ?>">
@@ -418,7 +418,7 @@ foreach ($schedules as $schedule) {
                 const button = event.relatedTarget;
                 document.getElementById('edit_schedule_id').value = button.getAttribute('data-id');
                 document.getElementById('edit_activity_id').value = button.getAttribute('data-activity');
-                document.getElementById('edit_instructor_id').value = button.getAttribute('data-instructor');
+                document.getElementById('edit_user_id').value = button.getAttribute('data-instructor');
                 document.getElementById('edit_day_of_week').value = button.getAttribute('data-day');
                 document.getElementById('edit_start_time').value = button.getAttribute('data-start');
                 document.getElementById('edit_end_time').value = button.getAttribute('data-end');

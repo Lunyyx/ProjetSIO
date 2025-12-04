@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Vérifier si l'email existe déjà (sauf pour cet instructeur)
         if ($email) {
-            $stmt = $conn->prepare("SELECT id FROM instructors WHERE email = ? AND id != ?");
+            $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
             $stmt->execute([$email, $instructor_id]);
             
             if ($stmt->rowCount() > 0) {
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         $stmt = $conn->prepare("
-            UPDATE instructors 
+            UPDATE users 
             SET first_name = ?, last_name = ?, email = ?, phone = ?, specialties = ?
             WHERE id = ?
         ");

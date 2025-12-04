@@ -13,7 +13,7 @@ $conn = $database->getConnection();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['member_id'])) {
     try {
-        $stmt = $conn->prepare("DELETE FROM members WHERE id = ?");
+        $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
         $stmt->execute([$_POST['member_id']]);
         
         header("Location: manage.php?success=deleted");

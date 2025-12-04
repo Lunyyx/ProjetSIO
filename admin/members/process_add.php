@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // Vérifier si l'email existe déjà
-        $stmt = $conn->prepare("SELECT id FROM members WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->execute([$email]);
         
         if ($stmt->rowCount() > 0) {
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Insérer le nouveau membre
         $stmt = $conn->prepare("
-            INSERT INTO members (first_name, last_name, email, role, address, address_pc, address_city, preferred_activities, created_by, created_at) 
+            INSERT INTO users (first_name, last_name, email, role, address, address_pc, address_city, preferred_activities, created_by, created_at) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
         ");
         
