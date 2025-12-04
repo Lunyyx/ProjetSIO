@@ -1,6 +1,12 @@
 <?php 
 $active = "admin-area";
 
+// Couleurs thématiques pour le planning
+$theme_color = 'warning';
+$theme_bg = 'bg-warning';
+$theme_text = 'text-warning';
+$theme_btn = 'btn-warning';
+
 include_once "../../config/database.php";
 require_once "../../includes/permissions.php";
 
@@ -35,11 +41,11 @@ $stmt = $conn->prepare("
     SELECT s.*, 
            a.name as activity_name, 
            a.color as activity_color,
-           i.first_name, 
-           i.last_name
+           u.first_name, 
+           u.last_name
     FROM schedule s
     JOIN activities a ON s.activity_id = a.id
-    JOIN instructors i ON s.instructor_id = i.id
+    JOIN users u ON s.user_id = u.id
     WHERE s.is_active = 1
     ORDER BY s.day_of_week, s.start_time
 ");
@@ -78,7 +84,7 @@ foreach ($schedules as $schedule) {
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h1 class="mb-2">
-                                <i class="bi bi-calendar-week text-warning me-2"></i>
+                                <i class="bi bi-calendar-week <?= $theme_text ?> me-2"></i>
                                 Gestion du Planning
                             </h1>
                             <p class="text-muted mb-0">
@@ -90,7 +96,7 @@ foreach ($schedules as $schedule) {
                             <a href="../area.php" class="btn btn-outline-secondary me-2">
                                 <i class="bi bi-arrow-left me-2"></i>Retour
                             </a>
-                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addScheduleModal">
+                            <button class="btn <?= $theme_btn ?>" data-bs-toggle="modal" data-bs-target="#addScheduleModal">
                                 <i class="bi bi-plus-circle me-2"></i>Ajouter un créneau
                             </button>
                         </div>
@@ -166,12 +172,12 @@ foreach ($schedules as $schedule) {
                                                         </td>
                                                         <td class="py-3 text-center">
                                                             <div class="btn-group btn-group-sm">
-                                                                <button class="btn btn-outline-warning" title="Modifier" 
+                                                                <button class="btn btn-outline-<?= $theme_color ?>" title="Modifier" 
                                                                     data-bs-toggle="modal" 
                                                                     data-bs-target="#editScheduleModal"
                                                                     data-id="<?= $schedule['id'] ?>"
                                                                     data-activity="<?= $schedule['activity_id'] ?>"
-                                                                    data-instructor="<?= $schedule['instructor_id'] ?>"
+                                                                    data-instructor="<?= $schedule['user_id'] ?>"
                                                                     data-day="<?= $schedule['day_of_week'] ?>"
                                                                     data-start="<?= $schedule['start_time'] ?>"
                                                                     data-end="<?= $schedule['end_time'] ?>"
@@ -284,7 +290,7 @@ foreach ($schedules as $schedule) {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-warning">
+                            <button type="submit" class="btn <?= $theme_btn ?>">
                                 <i class="bi bi-check-circle me-2"></i>Ajouter
                             </button>
                         </div>
@@ -370,7 +376,7 @@ foreach ($schedules as $schedule) {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-warning">
+                            <button type="submit" class="btn <?= $theme_btn ?>">
                                 <i class="bi bi-check-circle me-2"></i>Enregistrer
                             </button>
                         </div>

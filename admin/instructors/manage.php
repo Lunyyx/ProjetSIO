@@ -1,6 +1,12 @@
 <?php 
 $active = "admin-area";
 
+// Couleurs thématiques pour les animateurs
+$theme_color = 'primary';
+$theme_bg = 'bg-primary';
+$theme_text = 'text-primary';
+$theme_btn = 'btn-primary';
+
 include_once "../../config/database.php";
 require_once "../../includes/permissions.php";
 
@@ -37,7 +43,7 @@ $instructors = $stmt->fetchAll();
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h1 class="mb-2">
-                                <i class="bi bi-person-badge text-primary me-2"></i>
+                                <i class="bi bi-person-badge <?= $theme_text ?> me-2"></i>
                                 Gestion des Animateurs
                             </h1>
                             <p class="text-muted mb-0">
@@ -49,7 +55,7 @@ $instructors = $stmt->fetchAll();
                             <a href="../area.php" class="btn btn-outline-secondary me-2">
                                 <i class="bi bi-arrow-left me-2"></i>Retour
                             </a>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInstructorModal">
+                            <button class="btn <?= $theme_btn ?>" data-bs-toggle="modal" data-bs-target="#addInstructorModal">
                                 <i class="bi bi-person-plus-fill me-2"></i>Ajouter un animateur
                             </button>
                         </div>
@@ -106,7 +112,7 @@ $instructors = $stmt->fetchAll();
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle mb-0" id="instructorsTable">
-                                    <thead class="bg-primary text-white">
+                                    <thead class="<?= $theme_bg ?> text-white">
                                         <tr>
                                             <th class="px-4 py-3">Prénom</th>
                                             <th class="py-3">Nom</th>
@@ -219,7 +225,7 @@ $instructors = $stmt->fetchAll();
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn <?= $theme_btn ?>">
                                 <i class="bi bi-check-lg me-2"></i>Ajouter
                             </button>
                         </div>

@@ -1,6 +1,12 @@
 <?php 
 $active = "admin-area";
 
+// Couleurs thématiques pour le bureau
+$theme_color = 'danger';
+$theme_bg = 'bg-danger';
+$theme_text = 'text-danger';
+$theme_btn = 'btn-danger';
+
 include_once "../../config/database.php";
 require_once "../../includes/permissions.php";
 
@@ -37,7 +43,7 @@ $bureau_members = $stmt->fetchAll();
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h1 class="mb-2">
-                                <i class="bi bi-shield-check text-danger me-2"></i>
+                                <i class="bi bi-shield-check <?= $theme_text ?> me-2"></i>
                                 Gestion des Membres du Bureau
                             </h1>
                             <p class="text-muted mb-0">
@@ -49,7 +55,7 @@ $bureau_members = $stmt->fetchAll();
                             <a href="../area.php" class="btn btn-outline-secondary me-2">
                                 <i class="bi bi-arrow-left me-2"></i>Retour
                             </a>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBureauModal">
+                            <button class="btn <?= $theme_btn ?>" data-bs-toggle="modal" data-bs-target="#addBureauModal">
                                 <i class="bi bi-person-plus-fill me-2"></i>Ajouter un membre du bureau
                             </button>
                         </div>
@@ -106,7 +112,7 @@ $bureau_members = $stmt->fetchAll();
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle mb-0" id="bureauTable">
-                                    <thead class="bg-primary text-white">
+                                    <thead class="<?= $theme_bg ?> text-white">
                                         <tr>
                                             <th class="px-4 py-3">Prénom</th>
                                             <th class="py-3">Nom</th>
@@ -196,11 +202,11 @@ $bureau_members = $stmt->fetchAll();
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Prénom <span class="text-danger">*</span></label>
+                                    <label class="form-label">Prénom <span class="<?= $theme_text ?>">*</span></label>
                                     <input type="text" class="form-control" name="first_name" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Nom <span class="text-danger">*</span></label>
+                                    <label class="form-label">Nom <span class="<?= $theme_text ?>">*</span></label>
                                     <input type="text" class="form-control" name="last_name" required>
                                 </div>
                             </div>
@@ -219,7 +225,7 @@ $bureau_members = $stmt->fetchAll();
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn <?= $theme_btn ?>">
                                 <i class="bi bi-check-lg me-2"></i>Ajouter
                             </button>
                         </div>
@@ -241,11 +247,11 @@ $bureau_members = $stmt->fetchAll();
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Prénom <span class="text-danger">*</span></label>
+                                    <label class="form-label">Prénom <span class="<?= $theme_text ?>">*</span></label>
                                     <input type="text" class="form-control" name="first_name" id="edit_first_name" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Nom <span class="text-danger">*</span></label>
+                                    <label class="form-label">Nom <span class="<?= $theme_text ?>">*</span></label>
                                     <input type="text" class="form-control" name="last_name" id="edit_last_name" required>
                                 </div>
                             </div>

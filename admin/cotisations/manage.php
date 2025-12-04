@@ -1,6 +1,12 @@
 <?php 
 $active = "admin-area";
 
+// Couleurs thématiques pour les cotisations
+$theme_color = 'info';
+$theme_bg = 'bg-info';
+$theme_text = 'text-info';
+$theme_btn = 'btn-info';
+
 include_once "../../config/database.php";
 require_once "../../includes/permissions.php";
 
@@ -48,7 +54,7 @@ $members = $stmt->fetchAll();
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h1 class="mb-2">
-                                <i class="bi bi-cash-coin text-info me-2"></i>
+                                <i class="bi bi-cash-coin <?= $theme_text ?> me-2"></i>
                                 Gestion des Cotisations
                             </h1>
                             <p class="text-muted mb-0">
@@ -60,7 +66,7 @@ $members = $stmt->fetchAll();
                             <a href="../area.php" class="btn btn-outline-secondary me-2">
                                 <i class="bi bi-arrow-left me-2"></i>Retour
                             </a>
-                            <button class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#addCotisationModal">
+                            <button class="btn <?= $theme_btn ?> text-white" data-bs-toggle="modal" data-bs-target="#addCotisationModal">
                                 <i class="bi bi-plus-circle me-2"></i>Ajouter une cotisation
                             </button>
                         </div>
@@ -116,7 +122,7 @@ $members = $stmt->fetchAll();
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle mb-0" id="cotisationsTable">
-                                    <thead class="bg-primary text-white">
+                                    <thead class="<?= $theme_bg ?> text-white">
                                         <tr>
                                             <th class="px-4 py-3">Adhérent</th>
                                             <th class="py-3">Montant</th>
@@ -250,7 +256,7 @@ $members = $stmt->fetchAll();
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-info text-white">
+                            <button type="submit" class="btn <?= $theme_btn ?> text-white">
                                 <i class="bi bi-check-lg me-2"></i>Ajouter
                             </button>
                         </div>

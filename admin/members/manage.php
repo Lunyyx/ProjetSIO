@@ -1,6 +1,12 @@
 <?php 
 $active = "admin-area";
 
+// Couleurs thématiques pour les adhérents
+$theme_color = 'success';
+$theme_bg = 'bg-success';
+$theme_text = 'text-success';
+$theme_btn = 'btn-success';
+
 include_once "../../config/database.php";
 require_once "../../includes/permissions.php";
 
@@ -49,7 +55,7 @@ $activities = $stmt->fetchAll();
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h1 class="mb-2">
-                                <i class="bi bi-people-fill text-success me-2"></i>
+                                <i class="bi bi-people-fill <?= $theme_text ?> me-2"></i>
                                 Gestion des Adhérents
                             </h1>
                             <p class="text-muted mb-0">
@@ -61,7 +67,7 @@ $activities = $stmt->fetchAll();
                             <a href="../area.php" class="btn btn-outline-secondary me-2">
                                 <i class="bi bi-arrow-left me-2"></i>Retour
                             </a>
-                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMemberModal">
+                            <button class="btn <?= $theme_btn ?>" data-bs-toggle="modal" data-bs-target="#addMemberModal">
                                 <i class="bi bi-person-plus-fill me-2"></i>Ajouter un adhérent
                             </button>
                         </div>
@@ -121,7 +127,7 @@ $activities = $stmt->fetchAll();
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle mb-0" id="membersTable">
-                                    <thead class="bg-primary text-white">
+                                    <thead class="<?= $theme_bg ?> text-white">
                                         <tr>
                                             <th class="px-4 py-3">Prénom</th>
                                             <th class="py-3">Nom</th>
@@ -263,7 +269,7 @@ $activities = $stmt->fetchAll();
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-success">
+                            <button type="submit" class="btn <?= $theme_btn ?>">
                                 <i class="bi bi-check-lg me-2"></i>Ajouter
                             </button>
                         </div>

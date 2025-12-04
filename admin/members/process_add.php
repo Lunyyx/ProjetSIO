@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once "../../config/database.php";
+include_once "../../includes/mailer.php";
 require_once "../../includes/permissions.php";
 
 if(empty($_SESSION['user_id']) || !isMemberBureau()) {
@@ -46,10 +47,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
         
+        // Générer un token de définition de mot de passe
+        $token = bin2hex(random_bytes(32));
+        $token_expiry = date('Y-m-d H:i:s', strtotime('+24 hours'));
+        
         // Insérer le nouveau membre
         $stmt = $conn->prepare("
-            INSERT INTO users (first_name, last_name, email, role, address, address_pc, address_city, preferred_activities, created_by, created_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+            INSERT INTO users (
+                first_name, last_name, email, role, 
+                address, address_pc, address_city, preferred_activities, 
+                password_reset_token, password_reset_expires,
+                created_by, created_at
+            ) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
         ");
         
         $result = $stmt->execute([
@@ -60,11 +70,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $address, 
             $postal_code, 
             $city, 
-            $preferred_activities, 
+            $preferred_activities,
+            $token,
+            $token_expiry,
             $_SESSION['user_id']
         ]);
 
         if ($result) {
+            // Envoyer l'email de définition de mot de passe
+            $mailer = new Mailer();
+            $mailer->sendPasswordSetupEmail($email, $first_name, $token);
+            
             header("Location: manage.php?success=added");
         } else {
             header("Location: manage.php?error=add_failed");
