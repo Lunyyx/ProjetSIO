@@ -1,4 +1,7 @@
 <?php 
+include_once "../../config/database.php";
+require_once "../../includes/permissions.php";
+
 session_start();
 
 if(empty($_SESSION['user_id'])) {
@@ -6,7 +9,11 @@ if(empty($_SESSION['user_id'])) {
     exit();
 }
 
-include_once "../../config/database.php";
+// Vérifier que l'utilisateur est membre du bureau
+if (!isMemberBureau()) {
+    header("Location: ../../index.php");
+    exit();
+}
 
 $database = new Database();
 $conn = $database->getConnection();
@@ -14,8 +21,8 @@ $conn = $database->getConnection();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $stmt = $conn->prepare("
-            INSERT INTO schedule (activity_id, instructor_id, day_of_week, start_time, end_time, location, max_participants, created_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
+            INSERT INTO schedule (activity_id, instructor_id, day_of_week, start_time, end_time, location, max_participants, is_recurring, created_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())
         ");
         
         $stmt->execute([
@@ -25,7 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_POST['start_time'],
             $_POST['end_time'],
             $_POST['location'] ?? null,
-            $_POST['max_participants']
+            $_POST['max_participants'],
+            $_POST['is_recurring'] ?? 1
         ]);
         
         header("Location: manage.php?success=added");

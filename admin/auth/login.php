@@ -1,9 +1,9 @@
 <?php 
+session_start();
+
 $active = "member-area";
 
 include_once "../../config/database.php";
-
-session_start();
 
 if(isset($_SESSION['user_id'])) {
     header("Location: ../area.php");
@@ -21,16 +21,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $stmt = $conn->prepare("SELECT * FROM admins WHERE email = ?");
         $stmt->execute([$email]);
-        $member = $stmt->fetch();
+        $admin = $stmt->fetch();
 
-        if ($member) {
-            if (password_verify($password, $member['password'])) {
-                $_SESSION['user_id'] = $member['id'];
-                $_SESSION['email'] = $member['email'];
-                $_SESSION['first_name'] = $member['first_name'];
-                $_SESSION['last_name'] = $member['last_name'];
-                                
-                // Redirection avec exit obligatoire
+        if ($admin) {
+            if (password_verify($password, $admin['password'])) {
+                $_SESSION['user_id'] = $admin['id'];
+                $_SESSION['email'] = $admin['email'];
+                $_SESSION['first_name'] = $admin['first_name'];
+                $_SESSION['last_name'] = $admin['last_name'];
+                $_SESSION['role'] = 'membre_bureau'; // Les admins sont tous membres du bureau
+                
                 header("Location: ../area.php");
                 exit();
             } else {
@@ -47,11 +47,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <title>Connexion - Fit&Fun</title>
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+        <link href="../../assets/css/common.css" rel="stylesheet">
     </head>
     <body>
         <?php include_once("../../includes/header.php") ?>
