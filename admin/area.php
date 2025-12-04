@@ -121,45 +121,66 @@ try {
             </div>
 
             <!-- Gestion principale -->
-            <h3 class="mb-4"><i class="bi bi-grid-3x3-gap-fill me-2"></i>Gestion</h3>
+            <h3 class="mb-4"><i class="bi bi-grid-3x3-gap-fill me-2"></i>Gestion des Utilisateurs</h3>
 
             <div class="row g-4 mb-5">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="card h-100 border-0 shadow-sm hover-lift">
                         <div class="card-body p-4 text-center">
                             <div class="mb-3">
                                 <i class="bi bi-people-fill text-success" style="font-size: 3rem;"></i>
                             </div>
-                            <h3 class="card-title mb-3">Gestion des adhérents</h3>
+                            <h3 class="card-title mb-3">Adhérents</h3>
                             <p class="text-muted mb-4">
-                                <strong><?= $total_adherents ?></strong> adhérent(s) inscrit(s)<br>
-                                <small>Ajoutez, modifiez et consultez tous les membres</small>
+                                <strong><?= $total_adherents ?></strong> adhérent(s)<br>
+                                <small>Membres et visiteurs</small>
                             </p>
                             <a href="members/manage.php" class="btn btn-success btn-lg w-100">
-                                <i class="bi bi-list-ul me-2"></i>Gérer les adhérents
+                                <i class="bi bi-list-ul me-2"></i>Gérer
                             </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="card h-100 border-0 shadow-sm hover-lift">
                         <div class="card-body p-4 text-center">
                             <div class="mb-3">
                                 <i class="bi bi-person-badge text-primary" style="font-size: 3rem;"></i>
                             </div>
-                            <h3 class="card-title mb-3">Gestion des animateurs</h3>
+                            <h3 class="card-title mb-3">Animateurs</h3>
                             <p class="text-muted mb-4">
-                                <strong><?= $total_animateurs ?></strong> animateur(s) actif(s)<br>
-                                <small>Gérez les instructeurs et leurs spécialités</small>
+                                <strong><?= $total_animateurs ?></strong> animateur(s)<br>
+                                <small>Instructeurs et spécialités</small>
                             </p>
                             <a href="instructors/manage.php" class="btn btn-primary btn-lg w-100">
-                                <i class="bi bi-list-ul me-2"></i>Gérer les animateurs
+                                <i class="bi bi-list-ul me-2"></i>Gérer
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4 text-center">
+                            <div class="mb-3">
+                                <i class="bi bi-shield-check text-danger" style="font-size: 3rem;"></i>
+                            </div>
+                            <h3 class="card-title mb-3">Bureau</h3>
+                            <p class="text-muted mb-4">
+                                <strong><?= $total_bureau ?></strong> membre(s)<br>
+                                <small>Administrateurs du système</small>
+                            </p>
+                            <a href="bureau/manage.php" class="btn btn-danger btn-lg w-100">
+                                <i class="bi bi-list-ul me-2"></i>Gérer
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Gestion secondaire -->
+            <h3 class="mb-4"><i class="bi bi-gear-fill me-2"></i>Gestion des Activités</h3>
 
             <div class="row g-4">
                 <div class="col-md-4">
