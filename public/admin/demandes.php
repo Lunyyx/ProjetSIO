@@ -1,14 +1,13 @@
 <?php
-session_start();
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../src/models/Utilisateur.php';
 require_once __DIR__ . '/../../src/models/Adherent.php';
 require_once __DIR__ . '/../../src/models/Inscription.php';
 
-// Vérifier que l'utilisateur est connecté et est admin
-if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'admin') {
-    header('Location: /login.php');
-    exit;
+// Vérifier les droits d'administration
+if (!estConnecte() || !aLeDroit('bureau')) {
+    setMessage('Accès refusé. Droits d\'administration requis.', 'danger');
+    rediriger('/login.php');
 }
 
 $message = '';

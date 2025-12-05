@@ -25,7 +25,11 @@ foreach ($activites as $activite) {
     $totalInscriptions += $activiteModel->getNombreInscrits($activite['id']);
 }
 
-$db = Database::getInstance()->getConnection();
+$dbInstance = Database::getInstance();
+if (!$dbInstance) {
+    die('Erreur de connexion à la base de données');
+}
+$db = $dbInstance->getConnection();
 $stmtDemandes = $db->query("SELECT COUNT(*) as total FROM demandes_inscription WHERE statut = 'en_attente'");
 $nbDemandes = $stmtDemandes->fetch()['total'];
 

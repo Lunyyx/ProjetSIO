@@ -11,7 +11,11 @@ if (!estConnecte() || !aLeDroit('bureau')) {
 
 $activiteModel = new Activite();
 $animateurModel = new Animateur();
-$db = Database::getInstance()->getConnection();
+$dbInstance = Database::getInstance();
+if (!$dbInstance) {
+    die('Erreur de connexion à la base de données');
+}
+$db = $dbInstance->getConnection();
 
 $action = $_GET['action'] ?? 'liste';
 $id = $_GET['id'] ?? null;

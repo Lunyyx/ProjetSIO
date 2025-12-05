@@ -4,11 +4,19 @@
  * Fit&Fun - Association sportive
  */
 
-define('DB_HOST', 'db');
-define('DB_NAME', 'db');
-define('DB_USER', 'db');
-define('DB_PASS', 'db');
-define('DB_CHARSET', 'utf8mb4');
+// Charger l'autoloader Composer
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+// Charger les variables d'environnement depuis .env
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
+
+// Définir les constantes à partir des variables d'environnement
+define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
+define('DB_NAME', $_ENV['DB_NAME'] ?? 'db');
+define('DB_USER', $_ENV['DB_USER'] ?? 'root');
+define('DB_PASS', $_ENV['DB_PASS'] ?? '');
+define('DB_CHARSET', $_ENV['DB_CHARSET'] ?? 'utf8mb4');
 
 /**
  * Classe Database - Gestion de la connexion PDO

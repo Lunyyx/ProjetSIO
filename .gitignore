@@ -24,6 +24,7 @@ temp/
 
 # Config locale (ne pas versionner les configs avec mots de passe)
 config/local.php
+.env
 
 # Uploads
 uploads/

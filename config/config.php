@@ -9,10 +9,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Inclusion de la configuration de la base de données (charge aussi .env)
+require_once __DIR__ . '/database.php';
+
 // Configuration de l'application
 define('APP_NAME', 'Fit&Fun');
-define('APP_URL', 'http://projetsio.ddev.site');
+define('APP_URL', $_ENV['APP_URL'] ?? 'http://localhost');
 define('APP_VERSION', '1.0.0');
+define('APP_ENV', $_ENV['APP_ENV'] ?? 'production');
+define('APP_DEBUG', filter_var($_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOLEAN));
 
 // Chemins
 define('ROOT_PATH', dirname(__DIR__));
@@ -20,12 +25,14 @@ define('SRC_PATH', ROOT_PATH . '/src');
 define('PUBLIC_PATH', ROOT_PATH . '/public');
 define('ASSETS_PATH', ROOT_PATH . '/assets');
 
-// Inclusion de la configuration de la base de données
-require_once __DIR__ . '/database.php';
-
-// Gestion des erreurs
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Gestion des erreurs selon l'environnement
+if (APP_DEBUG) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+} else {
+    error_reporting(0);
+    ini_set('display_errors', 0);
+}
 
 // Timezone
 date_default_timezone_set('Europe/Paris');

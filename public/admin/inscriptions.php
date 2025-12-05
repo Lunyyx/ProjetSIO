@@ -13,7 +13,11 @@ if (!estConnecte() || !aLeDroit('bureau')) {
 $inscriptionModel = new Inscription();
 $activiteModel = new Activite();
 $adherentModel = new Adherent();
-$db = Database::getInstance()->getConnection();
+$dbInstance = Database::getInstance();
+if (!$dbInstance) {
+    die('Erreur de connexion à la base de données');
+}
+$db = $dbInstance->getConnection();
 
 // Filtres
 $filtreActivite = $_GET['activite'] ?? '';

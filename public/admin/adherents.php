@@ -11,7 +11,11 @@ if (!estConnecte() || !aLeDroit('bureau')) {
 
 $adherentModel = new Adherent();
 $utilisateurModel = new Utilisateur();
-$db = Database::getInstance()->getConnection();
+$dbInstance = Database::getInstance();
+if (!$dbInstance) {
+    die('Erreur de connexion à la base de données');
+}
+$db = $dbInstance->getConnection();
 
 $action = $_GET['action'] ?? 'liste';
 $id = $_GET['id'] ?? null;

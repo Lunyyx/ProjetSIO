@@ -18,7 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erreur = 'L\'adresse email n\'est pas valide.';
     } else {
         try {
-            $db = Database::getInstance()->getConnection();
+            $dbInstance = Database::getInstance();
+            if (!$dbInstance) {
+                die('Erreur de connexion à la base de données');
+            }
+            $db = $dbInstance->getConnection();
             $stmt = $db->prepare("INSERT INTO demandes_inscription (nom, prenom, email, telephone, activite_souhaitee, message) VALUES (?, ?, ?, ?, ?, ?)");
             
             if ($stmt->execute([$nom, $prenom, $email, $telephone, $activite, $message])) {
