@@ -1,65 +1,63 @@
 <?php
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+/**
+ * Configuration de la base de données
+ * Fit&Fun - Association sportive
+ */
 
-use Dotenv\Dotenv;
+define('DB_HOST', 'db');
+define('DB_NAME', 'db');
+define('DB_USER', 'db');
+define('DB_PASS', 'db');
+define('DB_CHARSET', 'utf8mb4');
 
+/**
+ * Classe Database - Gestion de la connexion PDO
+ */
 class Database {
-    private $host;
-    private $db_name;
-    private $username;
-    private $password;
-    private $charset;
-    public $conn;
-
-    public function __construct() {
-        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
-        $dotenv->load();
-        
-        $this->host = $_ENV['DB_HOST'];
-        $this->db_name = $_ENV['DB_NAME'];
-        $this->username = $_ENV['DB_USER'];
-        $this->password = $_ENV['DB_PASS'];
-        $this->charset = $_ENV['DB_CHARSET'];
+    private static $instance = null;
+    private $connection;
+    
+    private function __construct() {
+        try {
+            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
+            $options = [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+            ];
+            
+            $this->connection = new PDO($dsn, DB_USER, DB_PASS, $options);
+        } catch (PDOException $e) {
+            die("Erreur de connexion à la base de données : " . $e->getMessage());
+        }
     }
-
+    
     /**
-     * Obtenir la connexion à la base de données
-     * @return PDO|null
+     * Récupère l'instance unique de la connexion (Singleton)
+     */
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+    
+    /**
+     * Récupère la connexion PDO
      */
     public function getConnection() {
-        $this->conn = null;
-
-        try {
-            $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=" . $this->charset;
-            
-            $options = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-                PDO::ATTR_PERSISTENT         => false,
-                PDO::ATTR_TIMEOUT            => 5
-            ];
-
-            $this->conn = new PDO($dsn, $this->username, $this->password, $options);
-            
-        } catch(PDOException $e) {
-            error_log("Erreur de connexion DB : " . $e->getMessage());
-            
-            if ($_ENV['APP_ENV'] == 'dev') {
-                die("Erreur de connexion : " . $e->getMessage());
-            } else {
-                die("Erreur de connexion à la base de données. Veuillez réessayer plus tard.");
-            }
-        }
-
-        return $this->conn;
+        return $this->connection;
     }
-
+    
     /**
-     * Fermer la connexion
+     * Empêche le clonage de l'instance
      */
-    public function closeConnection() {
-        $this->conn = null;
+    private function __clone() {}
+    
+    /**
+     * Empêche la désérialisation de l'instance
+     */
+    public function __wakeup() {
+        throw new Exception("Cannot unserialize singleton");
     }
 }
-?>

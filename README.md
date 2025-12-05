@@ -1,325 +1,152 @@
-# Fit&Fun - Application Web de Gestion d'Association Sportive
+# Fit&Fun - Application Web
 
-## 📋 Présentation du Projet
+Application web pour l'association sportive Fit&Fun développée en PHP.
 
-Application web développée pour l'association **Fit&Fun**, une association sportive loi 1901 basée à Dijon proposant différentes activités (fitness, zumba, yoga, renforcement musculaire).
+## 🎯 Objectif du projet
 
-**Contact Client**: Julie Fort - Présidente  
-**Email**: julie.fort@fitandfun-association.fr  
-**Adresse**: 12 rue Vaillant, 21000 Dijon
+Application de gestion pour une association sportive permettant :
+- La gestion des adhérents
+- La gestion des activités et du planning
+- Les inscriptions en ligne
+- La consultation publique des informations
 
----
+## 📋 Prérequis
 
-## ✅ Conformité au Cahier des Charges
+- PHP 7.4+
+- MySQL/MariaDB
+- DDEV (recommandé) ou serveur web (Apache/Nginx)
 
-### 1. Objectifs Fonctionnels
+## 🚀 Installation avec DDEV
 
-#### ✅ Gestion des Adhérents
-- [x] Enregistrement des adhérents (nom, prénom, email, activités, cotisation)
-- [x] Consultation / modification / suppression d'un adhérent
-- [x] Interface dédiée : `/admin/members/manage.php`
-- [x] Rôles : Adhérent, Visiteur
-- [x] **3 adhérents exemples créés** selon le cahier des charges
+1. Cloner le projet :
+```bash
+git clone <url-du-repo>
+cd ProjetSIO
+```
 
-#### ✅ Gestion des Activités
-- [x] Liste des activités proposées (nom, description, couleur)
-- [x] Ajout / suppression / modification d'une activité
-- [x] Interface dédiée : `/admin/planning/manage.php`
-- [x] **5 activités créées** incluant les 4 du cahier des charges
+2. Démarrer DDEV :
+```bash
+ddev start
+```
 
-#### ✅ Planning
-- [x] Visualisation des créneaux d'activités
-- [x] Affichage sous forme de calendrier (FullCalendar)
-- [x] Interface publique : `/planning.php`
-- [x] Interface admin : `/admin/planning/manage.php`
-- [x] **4 créneaux créés** selon le cahier des charges :
-  - Fitness — Julie Fort — Lundi 18h00
-  - Zumba — Rachelle Leroy — Mardi 19h00
-  - Yoga — Caroline Petit — Jeudi 18h30
-  - Renforcement musculaire — Mathilde Rey — Vendredi 19h00
+3. Importer la base de données :
+```bash
+ddev import-db --src=database/schema.sql
+```
 
-#### ✅ Espace Public
-- [x] Page d'accueil présentant l'association : `/index.php`
-- [x] Formulaire d'inscription en ligne : `/inscription.php`
-- [x] Planning accessible au public : `/planning.php`
+4. Accéder à l'application :
+- Site web : https://projetsio.ddev.site
+- PhpMyAdmin : https://projetsio.ddev.site:8036
 
----
+## 👥 Comptes de test
 
-### 2. Utilisateurs et Droits
+### Administrateur (Bureau)
+- Email : admin@fitandfun.fr
+- Mot de passe : password
 
-| Profil | Droits | Interface | ✅ |
-|--------|--------|-----------|---|
-| **Visiteur** | Consulter planning, s'inscrire | Public | ✅ |
-| **Adhérent** | Consulter planning, gérer profil | Public | ✅ |
-| **Animateur** | Modifier ses séances | `/animateurs/dashboard.php` | ✅ |
-| **Membre du bureau** | Gérer tout (adhérents, activités, planning, cotisations) | `/admin/area.php` | ✅ |
+### Animateur
+- Email : julie.fort@fitandfun-association.fr
+- Mot de passe : password
 
-**Système de permissions** : `/includes/permissions.php`
+### Adhérent
+- Email : bertille.dupont@gmail.com
+- Mot de passe : password
 
----
-
-### 3. Contraintes Techniques
-
-#### ✅ Technologies Utilisées
-- [x] **Base de données** : MySQL / MariaDB (via DDEV)
-- [x] **Backend** : PHP 8.x
-- [x] **Frontend** : HTML5, CSS3, Bootstrap 5.3.8
-- [x] **JavaScript** : FullCalendar 6.1.10 pour le planning
-- [x] **Hébergement** : Serveur local DDEV
-- [x] **Accès** : http://fitfun.ddev.site
-- [x] **Sécurité** : Sessions PHP, mots de passe hashés (bcrypt), requêtes préparées PDO
-
-#### ✅ Architecture Base de Données
-
-**4 Tables créées** :
-
-1. **users** (table unifiée)
-   - Champs : id, first_name, last_name, email, password, role, phone, address, address_pc, address_city, preferred_activities, specialties, created_at, password_reset_token, password_reset_expires, updated_at
-   - Rôles : adherent, animateur, membre_bureau, visiteur
-   - **Nouveau** : Support des tokens de réinitialisation de mot de passe
-
-2. **activities**
-   - Champs : id, name, description, color, created_at
-   - 5 activités configurées
-
-3. **schedule**
-   - Champs : id, activity_id, user_id, day_of_week, start_time, end_time, max_participants, location, is_recurring, is_active
-   - 4 créneaux configurés
-
-4. **cotisations**
-   - Champs : id, user_id, amount, payment_date, start_date, end_date, payment_method, status
-
----
-
-### 4. Données Initiales du Client
-
-#### ✅ Activités (5/5)
-1. Fitness ✅
-2. Zumba ✅
-3. Yoga ✅
-4. Renforcement musculaire ✅
-5. Pilates (bonus) ✅
-
-#### ✅ Animateurs (4/4)
-1. Julie Fort - julie.fort@fitandfun-association.fr - Fitness ✅
-2. Rachelle Leroy - rachelle.leroy@fitfun.fr - Zumba ✅
-3. Caroline Petit - caroline.petit@fitfun.fr - Yoga ✅
-4. Mathilde Rey - mathilde.rey@fitfun.fr - Renforcement musculaire ✅
-
-**Mot de passe par défaut** : password123
-
-#### ✅ Adhérents Exemples (3/3)
-1. Bertille Dupont - bertille.dupont@gmail.com - Yoga ✅
-2. Lucas Bernard - lucas.bernard@outlook.fr - Fitness ✅
-3. Alexandre Roux - alexandre.roux@yahoo.fr - Zumba ✅
-
-#### ✅ Planning de la Semaine (4/4)
-- Lundi 18h00 : Fitness (Julie Fort) ✅
-- Mardi 19h00 : Zumba (Rachelle Leroy) ✅
-- Jeudi 18h30 : Yoga (Caroline Petit) ✅
-- Vendredi 19h00 : Renforcement musculaire (Mathilde Rey) ✅
-
----
-
-## 🗂️ Structure du Projet
+## 📁 Structure du projet
 
 ```
 ProjetSIO/
-├── admin/                    # Zone d'administration (membre bureau)
-│   ├── area.php             # Dashboard admin
-│   ├── members/             # Gestion adhérents
-│   ├── instructors/         # Gestion animateurs
-│   ├── bureau/              # Gestion membres bureau
-│   ├── planning/            # Gestion planning
-│   └── cotisations/         # Gestion cotisations
-├── animateurs/              # Espace animateurs
-│   └── dashboard.php        # Dashboard animateur
-├── auth/                    # Authentification
-│   ├── login.php            # Connexion
-│   └── logout.php           # Déconnexion
-├── api/                     # API REST
-│   └── fetch_schedule.php   # Récupération planning JSON
-├── config/                  # Configuration
-│   └── database.php         # Connexion BDD + variables .env
-├── includes/                # Fichiers communs
-│   ├── header.php           # En-tête navigation
-│   ├── permissions.php      # Système de permissions
-│   └── mailer.php           # Classe d'envoi d'emails ✅ (NOUVEAU)
-├── auth/                    # Authentification
-│   ├── login.php            # Connexion
-│   ├── logout.php           # Déconnexion
-│   └── setup_password.php   # Définition mot de passe ✅ (NOUVEAU)
-├── assets/                  # Ressources statiques
+├── config/              # Fichiers de configuration
+│   ├── config.php       # Configuration générale
+│   └── database.php     # Configuration BDD
+├── public/              # Pages publiques
+│   ├── index.php        # Page d'accueil
+│   ├── login.php        # Connexion
+│   ├── inscription.php  # Formulaire d'inscription
+│   ├── activites.php    # Liste des activités
+│   ├── planning.php     # Planning
+│   └── mes-inscriptions.php  # Gestion des inscriptions adhérent
+├── src/
+│   ├── models/          # Classes métier
+│   │   ├── Utilisateur.php
+│   │   ├── Adherent.php
+│   │   ├── Activite.php
+│   │   └── Inscription.php
+│   └── includes/        # Templates
+│       ├── header.php
+│       └── footer.php
+├── database/            # Scripts SQL
+│   └── schema.sql       # Schéma de la base
+├── assets/              # Ressources statiques
 │   ├── css/
-│   └── images/
-├── .env                     # Configuration (SMTP, BDD) ✅
-├── .env.example             # Exemple de configuration ✅
-├── index.php                # Page d'accueil publique ✅
-├── planning.php             # Planning public ✅
-├── inscription.php          # Formulaire inscription ✅
-├── process_inscription.php  # Traitement inscription + email ✅
-├── test_email.php           # Script de test emails ✅ (NOUVEAU)
-├── DEMARRAGE_EMAIL.md       # Guide rapide emails ✅ (NOUVEAU)
-└── CONFIGURATION_EMAIL.md   # Documentation complète emails ✅ (NOUVEAU)
+│   │   └── style.css
+│   └── js/
+│       └── script.js
+└── docs/                # Documentation
 ```
 
----
+## 🗄️ Base de données
 
-## 🚀 Installation et Démarrage
+Tables principales :
+- `utilisateurs` : Authentification et rôles
+- `adherents` : Informations des adhérents
+- `animateurs` : Informations des animateurs
+- `activites` : Activités proposées
+- `inscriptions` : Inscriptions aux activités
+- `demandes_inscription` : Demandes depuis le formulaire public
 
-### Prérequis
-- DDEV installé
-- PHP 8.x
-- MySQL/MariaDB
+## 🔐 Rôles utilisateurs
 
-### Démarrage
-```bash
-# Démarrer le projet
-ddev start
+1. **Visiteur** : Consultation publique + demande d'inscription
+2. **Adhérent** : Inscription aux activités, consultation du planning
+3. **Animateur** : Gestion de ses séances
+4. **Bureau** : Administration complète
 
-# Accéder à l'application
-ddev launch
+## 📝 Fonctionnalités
 
-# Accéder à phpMyAdmin
-ddev phpmyadmin
-```
+### Espace public
+- Présentation de l'association
+- Liste des activités
+- Planning des séances
+- Formulaire de demande d'inscription
 
-### Configuration des emails (obligatoire)
+### Espace adhérent
+- Inscription aux activités
+- Consultation des inscriptions
+- Désinscription
 
-**Méthode rapide** : Voir le guide `DEMARRAGE_EMAIL.md`
+### Espace bureau (Administration)
+- Gestion des adhérents
+- Gestion des activités
+- Traitement des demandes d'inscription
+- Statistiques
 
-```bash
-# 1. Créer un compte Mailtrap gratuit sur https://mailtrap.io
+## 🛠️ Technologies utilisées
 
-# 2. Configurer .env avec vos credentials
-nano .env
+- **Backend** : PHP 7.4+
+- **Base de données** : MySQL/MariaDB
+- **Frontend** : HTML5, CSS3, JavaScript
+- **Architecture** : MVC simplifié
+- **Sécurité** : PDO (requêtes préparées), password_hash
 
-# 3. Tester l'envoi
-ddev exec php test_email.php
-```
+## 📊 Améliorations possibles
 
-**Documentation complète** : `CONFIGURATION_EMAIL.md`
-ddev launch
+- [ ] Système de paiement en ligne pour les cotisations
+- [ ] Notifications par email
+- [ ] Calendrier interactif
+- [ ] Export PDF des plannings
+- [ ] Interface d'administration complète
+- [ ] API REST pour une application mobile
+- [ ] Gestion des absences/présences
+- [ ] Système de réservation de créneaux
 
-# Accéder à phpMyAdmin
-ddev phpmyadmin
-```
+## 📧 Contact
 
-### URL d'accès
-- **Application** : http://fitfun.ddev.site
-- **phpMyAdmin** : http://fitfun.ddev.site:8036
+Association Fit&Fun
+- Email : julie.fort@fitandfun-association.fr
+- Téléphone : 06 12 34 56 78
+- Adresse : 12 rue Vaillant, 21000 Dijon
 
----
+## 📄 Licence
 
-## 👥 Comptes de Test
-
-### Membre du Bureau
-- Email : `admin@fitfun.fr`
-- Mot de passe : `password123`
-- Accès : Toute l'administration
-
-### Animateurs
-- Email : `julie.fort@fitandfun-association.fr` (et autres animateurs)
-- Mot de passe : `password123`
-- Accès : Dashboard animateur
-
----
-
-## 📊 Fonctionnalités Principales
-
-### Pour les Visiteurs (Public)
-1. Consulter la page d'accueil
-2. Voir le planning des cours
-3. S'inscrire via le formulaire en ligne ✅ (NOUVEAU)
-
-### Pour les Adhérents
-1. Consulter le planning
-2. Voir leurs activités préférées
-3. Consulter leur profil
-
-### Pour les Animateurs
-1. Consulter le planning
-2. Gérer leurs séances (dashboard)
-3. Voir la liste de leurs cours
-
-### Pour les Membres du Bureau
-1. Gérer les adhérents (CRUD complet)
-2. Gérer les animateurs (CRUD complet)
-3. Gérer les membres du bureau (CRUD complet)
-4. Gérer les activités (CRUD complet)
-5. Gérer le planning (CRUD complet)
-6. Gérer les cotisations (CRUD complet)
-7. Voir les statistiques
-
----
-
-## ✅ Vérification Cahier des Charges
-
-### Objectifs Globaux
-- [x] Concepts réseau (serveur local DDEV, requêtes HTTP)
-- [x] Base de données (modèle relationnel, MySQL, requêtes SQL)
-- [x] Développement web (frontend Bootstrap / backend PHP)
-- [x] Mise en production (serveur web local)
-- [x] Gestion de projet (besoin analysé, données du client intégrées)
-
-### Livrables
-- [x] Application web fonctionnelle
-- [ ] Schéma réseau (à documenter)
-- [x] Modèle de données (4 tables créées)
-- [ ] Maquette (à documenter)
-- [x] Code source fonctionnel
-- [x] README documenté
-- [ ] Présentation finale (à préparer)
-
----
-
-## 📝 Notes Importantes
-
-### Améliorations Récentes
-1. ✅ Formulaire d'inscription public créé (`/inscription.php`)
-2. ✅ Lien "Inscription" ajouté dans le menu de navigation
-3. ✅ 4 animateurs du cahier des charges créés
-4. ✅ 3 adhérents exemples créés
-5. ✅ 4 créneaux du planning configurés exactement comme demandé
-6. ✅ Toutes les activités du cahier des charges présentes
-7. ✅ **Système d'envoi d'emails configuré (PHPMailer)**
-8. ✅ **Email automatique avec lien de définition de mot de passe**
-9. ✅ **Notifications au bureau lors des inscriptions**
-
-### Points d'Attention
-- Les emails nécessitent une configuration SMTP (voir `DEMARRAGE_EMAIL.md`)
-- Configuration SMTP dans le fichier `.env` (Mailtrap recommandé pour dev)
-- Les tokens de mot de passe expirent après 24 heures
-- Le projet est prêt pour la présentation finale
-
----
-
-## 👨‍💻 Développement
-
-### Technologies
-- **PHP** : POO, PDO, Sessions, Password Hashing
-- **MySQL** : Schéma relationnel, clés étrangères, requêtes JOIN
-- **Bootstrap 5** : Design responsive, composants modernes
-- **FullCalendar** : Calendrier interactif pour le planning
-- **DDEV** : Environnement de développement local
-
-### Sécurité
-- Requêtes préparées PDO (protection SQL injection)
-- Hashage des mots de passe (bcrypt)
-- Validation des sessions
-- Système de permissions par rôle
-- Protection CSRF (à améliorer)
-
----
-
-## 📞 Contact
-
-**Association Fit&Fun**  
-12 rue Vaillant  
-21000 Dijon  
-Email: julie.fort@fitandfun-association.fr  
-Tél: 06 12 34 56 78
-
----
-
-**Projet développé dans le cadre du BTS SIO - Applications Web**
+Projet éducatif - BTS SIO

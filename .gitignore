@@ -1,25 +1,38 @@
-# Fichiers de configuration sensibles
-.env
-config/env.php
-
-# Fichiers système
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-logs/
-
-# Cache
-cache/
-tmp/
-
-# Dépendances
-vendor/
-node_modules/
+# DDEV
+.ddev/
+.ddev/.homeadditions
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+error_log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Config locale (ne pas versionner les configs avec mots de passe)
+config/local.php
+
+# Uploads
+uploads/
+*.sql.gz
+
+# Node modules (si utilisé)
+node_modules/
+package-lock.json
+
+# Composer
+vendor/
+composer.lock
