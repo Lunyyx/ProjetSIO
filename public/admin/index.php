@@ -112,9 +112,17 @@ include __DIR__ . '/../../src/includes/header.php';
                     <span>🏋️</span>
                     <span>Créer une activité</span>
                 </a>
+                <a href="/admin/animateurs.php" class="action-btn">
+                    <span>🧑‍🏫</span>
+                    <span>Gérer les animateurs</span>
+                </a>
                 <a href="/admin/demandes.php" class="action-btn">
                     <span>📧</span>
                     <span>Traiter les demandes</span>
+                </a>
+                <a href="/admin/inscriptions.php" class="action-btn">
+                    <span>📋</span>
+                    <span>Voir inscriptions</span>
                 </a>
                 <a href="/planning.php" class="action-btn">
                     <span>📅</span>
@@ -204,7 +212,7 @@ include __DIR__ . '/../../src/includes/header.php';
 
 .quick-actions {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
 

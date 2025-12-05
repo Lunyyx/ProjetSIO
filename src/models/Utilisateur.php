@@ -67,4 +67,41 @@ class Utilisateur {
         $stmt = $this->db->query("SELECT * FROM utilisateurs ORDER BY date_creation DESC");
         return $stmt->fetchAll();
     }
+
+    // ===============================
+    // MÉTHODES STATIQUES
+    // ===============================
+
+    /**
+     * Récupérer un utilisateur par email (statique)
+     */
+    public static function getParEmail($email) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT * FROM utilisateurs WHERE email = ?");
+        $stmt->execute([$email]);
+        return $stmt->fetch();
+    }
+
+    /**
+     * Créer un nouvel utilisateur (statique)
+     */
+    public static function creer($donnees) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("INSERT INTO utilisateurs (email, mot_de_passe, role) VALUES (?, ?, ?)");
+        $stmt->execute([
+            $donnees['email'],
+            $donnees['mot_de_passe'],
+            $donnees['role'] ?? 'adherent'
+        ]);
+        return $db->lastInsertId();
+    }
+
+    /**
+     * Supprimer un utilisateur (statique)
+     */
+    public static function supprimerParId($id) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("DELETE FROM utilisateurs WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
 }

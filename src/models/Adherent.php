@@ -98,4 +98,40 @@ class Adherent {
         $result = $stmt->fetch();
         return $result['total'];
     }
+
+    // ===============================
+    // MÉTHODES STATIQUES
+    // ===============================
+
+    /**
+     * Récupérer un adhérent par utilisateur_id (statique)
+     */
+    public static function getParUtilisateurIdStatic($utilisateurId) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT * FROM adherents WHERE utilisateur_id = ?");
+        $stmt->execute([$utilisateurId]);
+        return $stmt->fetch();
+    }
+
+    /**
+     * Créer un nouvel adhérent (statique)
+     */
+    public static function creerStatic($donnees) {
+        $db = Database::getInstance()->getConnection();
+        $sql = "INSERT INTO adherents (utilisateur_id, nom, prenom, email, telephone, adresse, date_naissance, cotisation_payee) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            $donnees['utilisateur_id'] ?? null,
+            $donnees['nom'],
+            $donnees['prenom'],
+            $donnees['email'] ?? '',
+            $donnees['telephone'] ?? null,
+            $donnees['adresse'] ?? null,
+            $donnees['date_naissance'] ?? null,
+            $donnees['cotisation_payee'] ?? false
+        ]);
+        return $db->lastInsertId();
+    }
 }
