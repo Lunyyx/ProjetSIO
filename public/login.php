@@ -57,15 +57,6 @@ include __DIR__ . '/../src/includes/header.php';
             <div class="auth-footer">
                 <p>Pas encore de compte ? <a href="/inscription.php">Inscrivez-vous</a></p>
             </div>
-            
-            <div class="demo-info">
-                <h3>Comptes de démonstration :</h3>
-                <ul>
-                    <li><strong>Bureau :</strong> admin@fitandfun.fr / password</li>
-                    <li><strong>Animateur :</strong> julie.fort@fitandfun-association.fr / password</li>
-                    <li><strong>Adhérent :</strong> bertille.dupont@gmail.com / password</li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>

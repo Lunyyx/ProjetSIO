@@ -82,6 +82,18 @@ CREATE TABLE IF NOT EXISTS demandes_inscription (
     statut ENUM('en_attente', 'traitee', 'refusee') DEFAULT 'en_attente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Table des tokens (réinitialisation mot de passe, activation, etc.)
+CREATE TABLE IF NOT EXISTS tokens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    utilisateur_id INT NOT NULL,
+    token VARCHAR(64) UNIQUE NOT NULL,
+    type ENUM('password_reset', 'password_set', 'email_verification') DEFAULT 'password_reset',
+    expire_at DATETIME NOT NULL,
+    utilise BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Insertion des données initiales
 
 -- Insertion des utilisateurs par défaut

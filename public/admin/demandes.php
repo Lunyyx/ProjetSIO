@@ -3,6 +3,8 @@ require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../src/models/Utilisateur.php';
 require_once __DIR__ . '/../../src/models/Adherent.php';
 require_once __DIR__ . '/../../src/models/Inscription.php';
+require_once __DIR__ . '/../../src/models/Token.php';
+require_once __DIR__ . '/../../src/services/MailService.php';
 
 // Vérifier les droits d'administration
 if (!estConnecte() || !aLeDroit('bureau')) {
@@ -12,6 +14,7 @@ if (!estConnecte() || !aLeDroit('bureau')) {
 
 $message = '';
 $erreur = '';
+$mailService = new MailService();
 
 // Traitement des actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -47,12 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     $message = "Demande validée ! L'adhérent existait déjà dans le système.";
                 } else {
-                    // Créer un nouveau compte utilisateur
-                    $motDePasseTemporaire = bin2hex(random_bytes(4)); // 8 caractères aléatoires
+                    // Créer un nouveau compte utilisateur avec mot de passe temporaire
+                    $motDePasseTemporaire = bin2hex(random_bytes(32));
                     
                     $utilisateurId = Utilisateur::creer([
-                        'nom' => $demande['nom'],
-                        'prenom' => $demande['prenom'],
                         'email' => $demande['email'],
                         'mot_de_passe' => password_hash($motDePasseTemporaire, PASSWORD_DEFAULT),
                         'role' => 'adherent'
@@ -70,7 +71,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'cotisation_payee' => 0
                     ]);
                     
-                    $message = "Demande validée ! Compte créé avec le mot de passe temporaire : <strong>{$motDePasseTemporaire}</strong> (à communiquer à l'adhérent)";
+                    // Générer un token pour définir le mot de passe
+                    $token = Token::generer($utilisateurId, 'password_set');
+                    
+                    // Envoyer l'email
+                    if ($mailService->isConfigured()) {
+                        $emailEnvoye = $mailService->envoyerLienMotDePasse(
+                            $demande['email'],
+                            $demande['nom'],
+                            $demande['prenom'],
+                            $token
+                        );
+                        
+                        if ($emailEnvoye) {
+                            $message = "Demande validée ! Un email a été envoyé à <strong>{$demande['email']}</strong> pour définir son mot de passe.";
+                        } else {
+                            $message = "Compte créé mais l'email n'a pas pu être envoyé. Lien direct : <br><code>" . APP_URL . "/definir-mot-de-passe.php?token={$token}</code>";
+                        }
+                    } else {
+                        // Mail non configuré - afficher le lien directement
+                        $message = "Compte créé ! (Email non configuré)<br>Lien à envoyer à l'adhérent :<br><code>" . APP_URL . "/definir-mot-de-passe.php?token={$token}</code>";
+                    }
                 }
                 
                 // Mettre à jour le statut de la demande
