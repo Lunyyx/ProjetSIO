@@ -9,12 +9,30 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 class MailService {
+    private static ?MailService $instance = null;
     private PHPMailer $mailer;
     private bool $isConfigured = false;
     
     public function __construct() {
         $this->mailer = new PHPMailer(true);
         $this->configure();
+    }
+    
+    /**
+     * Singleton pour accès statique
+     */
+    private static function getInstance(): MailService {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+    
+    /**
+     * Méthode statique pour envoyer un email
+     */
+    public static function envoyer(string $destinataire, string $sujet, string $contenuHtml, string $contenuTexte = ''): bool {
+        return self::getInstance()->envoyerEmail($destinataire, $sujet, $contenuHtml, $contenuTexte);
     }
     
     /**
@@ -51,6 +69,11 @@ class MailService {
             // Vérifier si la config est complète
             $this->isConfigured = !empty($_ENV['MAIL_HOST']) && !empty($_ENV['MAIL_USERNAME']);
             
+            // Log de debug
+            if (!$this->isConfigured) {
+                error_log("MailService: Configuration incomplète - MAIL_HOST=" . ($_ENV['MAIL_HOST'] ?? 'non défini') . ", MAIL_USERNAME=" . ($_ENV['MAIL_USERNAME'] ?? 'non défini'));
+            }
+            
         } catch (Exception $e) {
             error_log("Erreur configuration mail: " . $e->getMessage());
             $this->isConfigured = false;
@@ -65,9 +88,9 @@ class MailService {
     }
     
     /**
-     * Envoie un email
+     * Envoie un email (méthode d'instance)
      */
-    public function envoyer(string $destinataire, string $sujet, string $contenuHtml, string $contenuTexte = ''): bool {
+    public function envoyerEmail(string $destinataire, string $sujet, string $contenuHtml, string $contenuTexte = ''): bool {
         if (!$this->isConfigured) {
             error_log("Service mail non configuré - Email non envoyé à: $destinataire");
             return false;
