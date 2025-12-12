@@ -28,11 +28,11 @@ $cssVersion = file_exists($cssPath) ? filemtime($cssPath) : time();
                         <li><a href="/mes-inscriptions.php">Mes inscriptions</a></li>
                     <?php endif; ?>
                     
-                    <?php if (aLeDroit('animateur')): ?>
+                    <?php if (($_SESSION['role'] ?? '') === 'animateur'): ?>
                         <li><a href="/gestion-seances.php">Mes séances</a></li>
                     <?php endif; ?>
                     
-                    <?php if (aLeDroit('bureau')): ?>
+                    <?php if (($_SESSION['role'] ?? '') === 'bureau'): ?>
                         <li><a href="/admin/" class="nav-admin">Administration</a></li>
                     <?php endif; ?>
                 <?php endif; ?>
