@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $donnees = [
             'nom' => $_POST['nom'],
             'description' => $_POST['description'] ?? null,
-            'animateur_id' => $_POST['animateur_id'],
+            'animateur_id' => $_POST['animateur_id'] ?: null,
             'jour_semaine' => $_POST['jour_semaine'],
             'heure_debut' => $_POST['heure_debut'],
             'heure_fin' => $_POST['heure_fin'] ?? null,
@@ -43,7 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             setMessage('Erreur lors de la création de l\'activité.', 'danger');
         }
         
-        rediriger('/admin/activites.php');
+        $redirect = $_POST['redirect'] ?? '/admin/activites.php';
+        rediriger($redirect);
         
     } elseif ($postAction === 'modifier') {
         $donnees = [

@@ -16,6 +16,8 @@ include __DIR__ . '/../src/includes/header.php';
     </div>
 </div>
 
+<?php afficherMessage(); ?>
+
 <section class="section">
     <div class="container">
         <h2>Qui sommes-nous ?</h2>

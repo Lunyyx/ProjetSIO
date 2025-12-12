@@ -31,6 +31,7 @@ include __DIR__ . '/../src/includes/header.php';
 ?>
 
 <div class="container">
+    <?php afficherMessage(); ?>
     <div class="auth-container">
         <div class="auth-card">
             <h1>Connexion</h1>
@@ -49,6 +50,10 @@ include __DIR__ . '/../src/includes/header.php';
                 <div class="form-group">
                     <label for="mot_de_passe">Mot de passe</label>
                     <input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" required>
+                </div>
+                
+                <div class="form-group" style="text-align: right;">
+                    <a href="/mot-de-passe-oublie.php" class="link-small">Mot de passe oublié ?</a>
                 </div>
                 
                 <button type="submit" class="btn btn-primary btn-block">Se connecter</button>

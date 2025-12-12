@@ -11,7 +11,7 @@ $inscriptionModel = new Inscription();
 $activites = $activiteModel->getTous();
 
 // Gérer l'inscription à une activité
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && estConnecte() && aLeDroit('adherent')) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && estConnecte() && ($_SESSION['role'] ?? '') === 'adherent') {
     $activiteId = $_POST['activite_id'] ?? null;
     
     if ($activiteId) {
@@ -39,6 +39,7 @@ include __DIR__ . '/../src/includes/header.php';
 ?>
 
 <div class="container">
+    <?php afficherMessage(); ?>
     <h1>Nos activités</h1>
     
     <div class="activities-list">
@@ -99,7 +100,7 @@ include __DIR__ . '/../src/includes/header.php';
                     </div>
                 </div>
                 
-                <?php if (estConnecte() && aLeDroit('adherent') && !$estInscrit && !$estComplete): ?>
+                <?php if (estConnecte() && ($_SESSION['role'] ?? '') === 'adherent' && !$estInscrit && !$estComplete): ?>
                     <form method="POST" action="/activites.php" class="inline-form">
                         <input type="hidden" name="activite_id" value="<?php echo $activite['id']; ?>">
                         <button type="submit" class="btn btn-primary">S'inscrire à cette activité</button>
@@ -107,6 +108,10 @@ include __DIR__ . '/../src/includes/header.php';
                 <?php elseif (!estConnecte()): ?>
                     <p class="text-muted">
                         <a href="/login.php">Connectez-vous</a> pour vous inscrire à cette activité.
+                    </p>
+                <?php elseif (estConnecte() && (($_SESSION['role'] ?? '') === 'bureau' || ($_SESSION['role'] ?? '') === 'animateur')): ?>
+                    <p class="text-muted">
+                        <em>Les inscriptions sont réservées aux adhérents.</em>
                     </p>
                 <?php endif; ?>
             </div>

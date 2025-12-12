@@ -38,6 +38,7 @@ include __DIR__ . '/../src/includes/header.php';
 ?>
 
 <div class="container">
+    <?php afficherMessage(); ?>
     <h1>Mes inscriptions</h1>
     
     <div class="profile-info">
