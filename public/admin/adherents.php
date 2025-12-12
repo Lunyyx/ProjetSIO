@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../src/models/Adherent.php';
 require_once __DIR__ . '/../../src/models/Utilisateur.php';
+require_once __DIR__ . '/../../src/models/Token.php';
+require_once __DIR__ . '/../../src/services/MailService.php';
 
 // Vérifier les droits d'administration
 if (!estConnecte() || !aLeDroit('bureau')) {
@@ -11,6 +13,7 @@ if (!estConnecte() || !aLeDroit('bureau')) {
 
 $adherentModel = new Adherent();
 $utilisateurModel = new Utilisateur();
+$tokenModel = new Token();
 $dbInstance = Database::getInstance();
 if (!$dbInstance) {
     die('Erreur de connexion à la base de données');
@@ -25,31 +28,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $postAction = $_POST['action'] ?? '';
     
     if ($postAction === 'creer') {
-        // Créer un compte utilisateur d'abord
-        $email = $_POST['email'];
-        $motDePasse = $_POST['mot_de_passe'] ?? 'password123';
+        $email = trim($_POST['email']);
+        $nom = trim($_POST['nom']);
+        $prenom = trim($_POST['prenom']);
         
-        $utilisateurId = $utilisateurModel->inscription($email, $motDePasse, 'adherent');
-        
-        if ($utilisateurId) {
-            $donnees = [
-                'utilisateur_id' => $utilisateurId,
-                'nom' => $_POST['nom'],
-                'prenom' => $_POST['prenom'],
-                'email' => $_POST['email'],
-                'telephone' => $_POST['telephone'] ?? null,
-                'adresse' => $_POST['adresse'] ?? null,
-                'date_naissance' => $_POST['date_naissance'] ?: null,
-                'cotisation_payee' => isset($_POST['cotisation_payee']) ? 1 : 0
-            ];
-            
-            if ($adherentModel->creer($donnees)) {
-                setMessage('Adhérent créé avec succès !', 'success');
-            } else {
-                setMessage('Erreur lors de la création de l\'adhérent.', 'danger');
-            }
-        } else {
+        // Vérifier si l'email existe déjà
+        $stmt = $db->prepare("SELECT id FROM utilisateurs WHERE email = ?");
+        $stmt->execute([$email]);
+        if ($stmt->fetch()) {
             setMessage('Erreur : cet email existe déjà.', 'danger');
+        } else {
+            // Créer l'utilisateur avec un mot de passe temporaire
+            $tempPassword = bin2hex(random_bytes(32));
+            $hashedPassword = password_hash($tempPassword, PASSWORD_DEFAULT);
+            $stmt = $db->prepare("INSERT INTO utilisateurs (email, mot_de_passe, role) VALUES (?, ?, 'adherent')");
+            
+            if ($stmt->execute([$email, $hashedPassword])) {
+                $utilisateurId = $db->lastInsertId();
+                
+                $donnees = [
+                    'utilisateur_id' => $utilisateurId,
+                    'nom' => $nom,
+                    'prenom' => $prenom,
+                    'email' => $email,
+                    'telephone' => $_POST['telephone'] ?? null,
+                    'adresse' => $_POST['adresse'] ?? null,
+                    'date_naissance' => $_POST['date_naissance'] ?: null,
+                    'cotisation_payee' => isset($_POST['cotisation_payee']) ? 1 : 0
+                ];
+                
+                if ($adherentModel->creer($donnees)) {
+                    // Créer un token pour définir le mot de passe
+                    $token = $tokenModel->creer($utilisateurId, 'password_set', 72);
+                    
+                    if ($token) {
+                        $lien = "https://" . $_SERVER['HTTP_HOST'] . "/definir-mot-de-passe.php?token=" . $token;
+                        
+                        $sujet = "Bienvenue chez Fit&Fun - Définissez votre mot de passe";
+                        $contenu = "
+                            <h2>Bienvenue {$prenom} !</h2>
+                            <p>Votre compte adhérent chez Fit&Fun a été créé.</p>
+                            <p>Cliquez sur le lien ci-dessous pour définir votre mot de passe et activer votre compte :</p>
+                            <p style='text-align: center; margin: 30px 0;'>
+                                <a href='{$lien}' style='background: linear-gradient(135deg, #ff7a59 0%, #ff5a36 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold;'>
+                                    Définir mon mot de passe
+                                </a>
+                            </p>
+                            <p><strong>Ce lien est valable pendant 72 heures.</strong></p>
+                            <p>Une fois connecté(e), vous pourrez vous inscrire aux activités et consulter le planning.</p>
+                        ";
+                        
+                        if (MailService::envoyer($email, $sujet, $contenu)) {
+                            setMessage('Adhérent créé ! Un email a été envoyé à ' . e($email) . ' pour définir son mot de passe.', 'success');
+                        } else {
+                            setMessage('Adhérent créé mais erreur lors de l\'envoi de l\'email. Lien : ' . $lien, 'warning');
+                        }
+                    } else {
+                        setMessage('Adhérent créé mais erreur lors de la génération du token.', 'warning');
+                    }
+                } else {
+                    setMessage('Erreur lors de la création de l\'adhérent.', 'danger');
+                }
+            } else {
+                setMessage('Erreur lors de la création du compte utilisateur.', 'danger');
+            }
         }
         
         rediriger('/admin/adherents.php');
