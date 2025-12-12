@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $sujet = "Bienvenue chez Fit&Fun - Définissez votre mot de passe";
                         $contenu = "
                             <h2>Bienvenue {$prenom} !</h2>
-                            <p>Votre compte adhérent chez Fit&Fun a été créé.</p>
+                            <p>Votre compte adhérent a été créé chez Fit&Fun.</p>
                             <p>Cliquez sur le lien ci-dessous pour définir votre mot de passe et activer votre compte :</p>
                             <p style='text-align: center; margin: 30px 0;'>
                                 <a href='{$lien}' style='background: linear-gradient(135deg, #ff7a59 0%, #ff5a36 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold;'>
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </a>
                             </p>
                             <p><strong>Ce lien est valable pendant 72 heures.</strong></p>
-                            <p>Une fois connecté(e), vous pourrez vous inscrire aux activités et consulter le planning.</p>
+                            <p>Une fois connecté(e), vous pourrez vous inscrire aux activités de l'association.</p>
                         ";
                         
                         if (MailService::envoyer($email, $sujet, $contenu)) {
@@ -229,6 +229,7 @@ include __DIR__ . '/../../src/includes/header.php';
         <!-- Formulaire d'ajout -->
         <div class="admin-form-container">
             <h2>Nouvel adhérent</h2>
+            <p class="text-muted">Un email sera envoyé à l'adhérent pour qu'il définisse son mot de passe.</p>
             
             <form method="POST" class="admin-form">
                 <input type="hidden" name="action" value="creer">
@@ -247,11 +248,7 @@ include __DIR__ . '/../../src/includes/header.php';
                 <div class="form-group">
                     <label for="email">Email *</label>
                     <input type="email" id="email" name="email" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="mot_de_passe">Mot de passe (défaut: password123)</label>
-                    <input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" placeholder="Laisser vide pour le mot de passe par défaut">
+                    <small class="form-text">Un email d'invitation sera envoyé à cette adresse.</small>
                 </div>
                 
                 <div class="form-row">
