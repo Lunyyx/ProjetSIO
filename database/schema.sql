@@ -94,41 +94,5 @@ CREATE TABLE IF NOT EXISTS tokens (
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insertion des données initiales
-
--- Insertion des utilisateurs par défaut
-INSERT INTO utilisateurs (email, mot_de_passe, role) VALUES
-('admin@fitandfun.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'bureau'), -- password: password
-('julie.fort@fitandfun-association.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'bureau'),
-('rachelle.leroy@fitandfun.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'animateur'),
-('caroline.petit@fitandfun.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'animateur'),
-('mathilde.rey@fitandfun.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'animateur'),
-('bertille.dupont@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'adherent'),
-('lucas.bernard@outlook.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'adherent'),
-('alexandre.roux@yahoo.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'adherent');
-
--- Insertion des animateurs
-INSERT INTO animateurs (utilisateur_id, nom, prenom, email, telephone, specialite) VALUES
-(2, 'Fort', 'Julie', 'julie.fort@fitandfun-association.fr', '0612345678', 'Fitness'),
-(3, 'Leroy', 'Rachelle', 'rachelle.leroy@fitandfun.fr', '0623456789', 'Zumba'),
-(4, 'Petit', 'Caroline', 'caroline.petit@fitandfun.fr', '0634567890', 'Yoga'),
-(5, 'Rey', 'Mathilde', 'mathilde.rey@fitandfun.fr', '0645678901', 'Renforcement musculaire');
-
--- Insertion des activités
-INSERT INTO activites (nom, description, animateur_id, jour_semaine, heure_debut, heure_fin, duree_minutes, capacite_max, lieu) VALUES
-('Fitness', 'Séance de fitness pour tous niveaux', 1, 'Lundi', '18:00:00', '19:00:00', 60, 20, 'Salle principale'),
-('Zumba', 'Danse fitness sur des rythmes latins', 2, 'Mardi', '19:00:00', '20:00:00', 60, 25, 'Salle principale'),
-('Yoga', 'Séance de yoga relaxant et tonifiant', 3, 'Jeudi', '18:30:00', '19:30:00', 60, 15, 'Salle zen'),
-('Renforcement musculaire', 'Travail de tous les groupes musculaires', 4, 'Vendredi', '19:00:00', '20:00:00', 60, 20, 'Salle principale');
-
--- Insertion des adhérents
-INSERT INTO adherents (utilisateur_id, nom, prenom, email, telephone, cotisation_payee) VALUES
-(6, 'Dupont', 'Bertille', 'bertille.dupont@gmail.com', '0656789012', TRUE),
-(7, 'Bernard', 'Lucas', 'lucas.bernard@outlook.fr', '0667890123', TRUE),
-(8, 'Roux', 'Alexandre', 'alexandre.roux@yahoo.fr', '0678901234', TRUE);
-
--- Inscription des adhérents aux activités
-INSERT INTO inscriptions (adherent_id, activite_id) VALUES
-(1, 3), -- Bertille au Yoga
-(2, 1), -- Lucas au Fitness
-(3, 2); -- Alexandre à la Zumba
+-- Données de démonstration (optionnelles, à supprimer en production)
+-- Pour créer le premier compte administrateur, utilisez la page /setup.php

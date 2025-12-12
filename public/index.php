@@ -2,6 +2,18 @@
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../src/models/Activite.php';
 
+// Vérifier si le setup est nécessaire (aucun compte bureau)
+$lockFile = __DIR__ . '/../.setup_complete';
+if (!file_exists($lockFile)) {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->prepare("SELECT COUNT(*) FROM utilisateurs WHERE role = 'bureau'");
+    $stmt->execute();
+    if ($stmt->fetchColumn() == 0) {
+        header('Location: /setup.php');
+        exit();
+    }
+}
+
 $activiteModel = new Activite();
 $activites = $activiteModel->getTous();
 

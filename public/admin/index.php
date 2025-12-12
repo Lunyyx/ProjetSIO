@@ -120,6 +120,10 @@ include __DIR__ . '/../../src/includes/header.php';
                     <span>🧑‍🏫</span>
                     <span>Gérer les animateurs</span>
                 </a>
+                <a href="/admin/utilisateurs.php" class="action-btn">
+                    <span>🔑</span>
+                    <span>Gérer les utilisateurs</span>
+                </a>
                 <a href="/admin/demandes.php" class="action-btn">
                     <span>📧</span>
                     <span>Traiter les demandes</span>
