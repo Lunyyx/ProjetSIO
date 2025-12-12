@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 if ($adherentModel->creer($donnees)) {
                     // Créer un token pour définir le mot de passe
-                    $token = $tokenModel->creer($utilisateurId, 'password_set', 72);
+                    $token = Token::generer($utilisateurId, 'password_set', 72);
                     
                     if ($token) {
                         $lien = "https://" . $_SERVER['HTTP_HOST'] . "/definir-mot-de-passe.php?token=" . $token;

@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $userId = $db->lastInsertId();
                     
                     // Créer un token pour définir le mot de passe
-                    $token = $tokenModel->creer($userId, 'password_set', 72); // 72 heures
+                    $token = Token::generer($userId, 'password_set', 72); // 72 heures
                     
                     if ($token) {
                         // Envoyer l'email d'invitation

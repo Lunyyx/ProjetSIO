@@ -7,8 +7,12 @@ class Token {
     
     /**
      * Génère un token unique et le stocke en base
+     * @param int $utilisateurId ID de l'utilisateur
+     * @param string $type Type de token (password_reset, password_set, email_verification)
+     * @param int $heuresExpiration Nombre d'heures avant expiration (défaut: 24)
+     * @return string Le token généré
      */
-    public static function generer(int $utilisateurId, string $type = 'password_reset'): string {
+    public static function generer(int $utilisateurId, string $type = 'password_reset', int $heuresExpiration = 24): string {
         $db = Database::getInstance()->getConnection();
         
         // Supprimer les anciens tokens de ce type pour cet utilisateur
@@ -17,7 +21,7 @@ class Token {
         
         // Générer un nouveau token
         $token = bin2hex(random_bytes(32)); // 64 caractères
-        $expiration = date('Y-m-d H:i:s', strtotime('+24 hours'));
+        $expiration = date('Y-m-d H:i:s', strtotime("+{$heuresExpiration} hours"));
         
         // Stocker le token
         $stmt = $db->prepare("INSERT INTO tokens (utilisateur_id, token, type, expire_at) VALUES (?, ?, ?, ?)");
