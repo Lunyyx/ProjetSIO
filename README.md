@@ -209,4 +209,4 @@ Association Fit&Fun
 
 ## 📄 Licence
 
-Projet éducatif - BTS SIO SLAM
+Projet éducatif - BTS SIO
